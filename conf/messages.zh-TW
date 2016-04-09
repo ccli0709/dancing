@@ -1,0 +1,61 @@
+#
+# Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+#
+# https://github.com/playframework/playframework/blob/master/framework/src/play/src/main/resources/messages.default
+
+# Default messages
+
+# --- Constraints
+constraint.required=必填欄位
+constraint.min=Minimum value: {0}
+constraint.max=Maximum value: {0}
+constraint.minLength=Minimum length: {0}
+constraint.maxLength=Maximum length: {0}
+constraint.email=Email
+
+# --- Formats
+format.date=Date (''{0}'')
+format.numeric=Numeric
+format.real=Real
+format.uuid=UUID
+
+# --- Errors
+error.invalid=這是無效的數值。
+error.invalid.java.util.Date=Invalid date value
+error.required=這是必填欄位。
+error.number=Numeric value expected
+error.real=Real number value expected
+error.real.precision=Real number value with no more than {0} digit(s) including {1} decimal(s) expected
+error.min=數值必須大於等於 {0}
+error.min.strict=Must be strictly greater than {0}
+error.max=數值必須小於等於 {0}
+error.max.strict=Must be strictly less than {0}
+error.minLength=Minimum length is {0}
+error.maxLength=Maximum length is {0}
+error.email=必須為合法的電子郵件格式
+error.pattern=Must satisfy {0}
+error.date=Valid date required
+error.uuid=Valid UUID required
+
+error.expected.date=Date value expected
+error.expected.date.isoformat=Iso date value expected
+error.expected.time=Time value expected
+error.expected.jodadate.format=Joda date value expected
+error.expected.jodatime.format=Joda time value expected
+error.expected.jsarray=Array value expected
+error.expected.jsboolean=Boolean value expected
+error.expected.jsnumber=Number value expected
+error.expected.jsobject=Object value expected
+error.expected.jsstring=String value expected
+error.expected.jsnumberorjsstring=String or number expected
+error.expected.keypathnode=Node value expected
+error.expected.uuid=UUID value expected
+error.expected.validenumvalue=Valid enumeration value expected
+error.expected.enumstring=String value expected
+
+error.path.empty=Empty path
+error.path.missing=Missing path
+error.path.result.multiple=Multiple results for the given path
+
+pagination.prevPage=上一頁
+pagination.nextPage=下一頁
