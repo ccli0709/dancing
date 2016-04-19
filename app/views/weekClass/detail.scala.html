@@ -1,0 +1,139 @@
+@(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.WeekClass] , headers: Map[String, String] , rows:
+List[Form[forms.WeekClassForm]]) @main(params) { } {
+
+<div
+	class="row"
+	style="margin-bottom: 1em">
+	<div class="col-md-12">
+		<form class="form-inline">
+			<div
+				class="input-group"
+				style='width: 160px;'>
+				<span class="input-group-addon">上課代號</span>
+				<input
+					type="text"
+					class="form-control"
+					aria-label="Amount (to the nearest dollar)">
+			</div>
+			<button class="btn btn-info">查詢</button>
+			<code style='margin-left: 3em'>維護功能</code>
+			<button class="btn btn-primary">新增</button>
+			<button class="btn btn-warning">修改</button>
+			<button class="btn btn-danger">刪除</button>
+		</form>
+	</div>
+</div>
+<div
+	class="row"
+	style="margin-bottom: 1em">
+	<div class="col-lg-9 col-lg-offset-1">
+		<div id="tabs">
+			<ul>
+				<li>
+					<a href="#tabs-1">上課資料</a>
+				</li>
+			</ul>
+
+			<div id="tabs-1">
+				<table class='table table-border'>
+					<tr>
+						<th
+							class='info'
+							style='width: 100px'>上課代碼</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+						<th
+							class='info'
+							style='width: 100px'>級別</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+					</tr>
+					<tr>
+						<th class='info'>舞科</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+						<th class='info'>舞碼</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+					</tr>
+					<tr>
+						<th class='info'>星期</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+						<th class='info'>時段</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+					</tr>
+					<tr>
+						<th class='info'>起始時間</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+						<th class='info'>結束時間</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+					</tr>
+					<tr>
+						<th class='info'>起始日期</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+						<th class='info'>結束日期</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+					</tr>
+					<tr>
+						<th class='info'>課堂</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+						<th class='info'>地點</th>
+						<td>
+							<input
+								type="text"
+								class="form-control"></input>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+</div>
+} {
+<script>
+	$(function() {
+		$("#tabs").tabs();
+	});
+</script>
+}

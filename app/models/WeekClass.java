@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,12 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
+import com.google.common.collect.Lists;
 
 @Entity
 public class WeekClass extends Model {
@@ -53,12 +55,27 @@ public class WeekClass extends Model {
 	public static PagedList<WeekClass> getPagedList(forms.QueryParams queryParams) {
 		ExpressionList<WeekClass> where = find.where();
 
-		// if (queryParam.getQueryString().length() > 0) {
-		// where.disjunction().add(Expr.contains("facebook_name",
-		// queryParam.getQueryString()))
-		// .add(Expr.contains("address", queryParam.getQueryString()))
-		// .add(Expr.contains("chinese_name", queryParam.getQueryString()));
-		// }
+		if (queryParams.getQueryString().length() > 0) {
+
+			List<String> allowedFields = Lists.newArrayList("choreography", "location", "level");
+			for (String query : queryParams.getQueryString().split(",")) {
+
+				String[] tokens = query.split(":");
+				if (tokens.length != 2)
+					continue;
+
+				for (String field : allowedFields) {
+					if (field.equals(tokens[0])) {
+						where.add(Expr.contains(field, tokens[1]));
+					}
+				}
+			}
+
+			// where.disjunction().add(Expr.contains("facebook_name",
+			// queryParam.getQueryString()))
+			// .add(Expr.contains("address", queryParam.getQueryString()))
+			// .add(Expr.contains("chinese_name", queryParam.getQueryString()));
+		}
 		//
 		// // 搜尋結果排序
 		where.orderBy(String.format("%s %s", queryParams.getSortField(), queryParams.getSortDirection()));

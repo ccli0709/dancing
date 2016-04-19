@@ -42,13 +42,13 @@ create index ix_anniversary_user_1 on anniversary (user_id);
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists anniversary;
+drop table anniversary;
 
-drop table if exists user;
+drop table user;
 
-drop table if exists week_class;
+drop table week_class;
 
-SET REFERENTIAL_INTEGRITY TRUE;
+SET FOREIGN_KEY_CHECKS=1;
 

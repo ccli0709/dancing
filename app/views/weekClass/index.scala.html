@@ -1,13 +1,49 @@
-@(params: Map[String, String] , page: com.avaje.ebean.PagedList[models.WeekClass] , headers: Map[String, String] , rows:
+@(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.WeekClass] , headers: Map[String, String] , rows:
 List[Form[forms.WeekClassForm]]) @main(params) { } {
 
 <div class="row">
-	<div class="col-lg-12">
+	<div class="col-md-2">
+		<select
+			class="form-control"
+			id="selChoreographies">
+			@for((key, value) <- params.getMap("choreographies")){
+			<option value="@key">@value</option>
+			}
+		</select>
+	</div>
+	<div class="col-md-2">
+		<select
+			class="form-control"
+			id="selLocations">
+			@for((key, value) <- params.getMap("locations")){
+			<option value="@key">@value</option>
+			}
+		</select>
+	</div>
+	<div class="col-md-2">
+		<select
+			class="form-control"
+			id="selLevels">
+			@for((key, value) <- params.getMap("levels")){
+			<option value="@key">@value</option>
+			}
+		</select>
+	</div>
+
+	<div class="col-md-2">
+		<button
+			class="btn btn-info"
+			id="btnQuery">�閰�</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
 		<nav>
 			<ul class="pager">
 				@if(page.hasPrev) {
 				<li>
-					<a href='@(routes.WeekClass.list())?p=@(page.getPageIndex())&s=@params("sortField")&d=@params("sortDirection")&q=@params("queryString")'>@Messages("pagination.prevPage")</a>
+					<a
+						href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex())&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.prevPage")</a>
 				</li>
 				} else {
 				<li class="disabled">
@@ -15,11 +51,12 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				</li>
 				}
 				<li class="current">
-					<a>第 @page.getDisplayXtoYofZ("-"," 筆 / 共 ") 筆</a>
+					<a>蝚� @page.getDisplayXtoYofZ("-"," 蝑� / � ") 蝑�</a>
 				</li>
 				@if(page.hasNext) {
 				<li>
-					<a href='@(routes.WeekClass.list())?p=@(page.getPageIndex()+2)&s=@params("sortField")&d=@params("sortDirection")&q=@params("queryString")'>@Messages("pagination.nextPage")</a>
+					<a
+						href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex()+2)&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.nextPage")</a>
 				</li>
 				} else {
 				<li class="disabled">
@@ -40,12 +77,12 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				@for((key, value) <- headers) {
 				<th>
 					@if(!value.isEmpty){
-					<a href='@(routes.WeekClass.list())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params("queryString"))'>
+					<a href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params.getString("queryString"))'>
 						<i class="fa fa-sort-asc"></i>
 						</i>
 					</a>
 					} @key @if(!value.isEmpty){
-					<a href='@(routes.WeekClass.list())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params("queryString"))'>
+					<a href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params.getString("queryString"))'>
 						<i class="fa fa-sort-desc"></i>
 					</a>
 					}
@@ -54,7 +91,9 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 			</tr>
 			@for(row <- rows) {
 			<tr>
-				<td>@row("id").value</td>
+				<td>
+					<a href='@(routes.WeekClassDetail.index(1))'>@row("id").value</a>
+				</td>
 				<td>@row("danceDivision").value</td>
 				<td>@row("choreography").value</td>
 				<td>@row("dayOfWeek").value</td>
@@ -72,4 +111,20 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 		</table>
 	</div>
 </div>
-} { }
+} {
+<script>
+	$(function() {
+		$("#btnQuery").click(function() {
+			var url = "@(routes.WeekClassMaster.index())?q=";
+			if ($("#selChoreographies").val() != "")
+				url += "choreography:" + $("#selChoreographies").val() + ",";
+			if ($("#selLocations").val() != "")
+				url += "location:" + $("#selLocations").val() + ",";
+			if ($("#selLevels").val() != "")
+				url += "level:" + $("#selLevels").val() + ",";
+			window.location = url;
+		});
+
+	});
+</script>
+}

@@ -18,18 +18,20 @@ import play.mvc.Result;
 
 public class Application extends Controller {
 
+	// 用於全局的參數
+	forms.PageParams params = new forms.PageParams();
+	forms.QueryParams queryParams;
+
 	List<Form<AnniversaryForm>> formRows;
 	Form<AnniversaryForm> formData;
-	Map<String, String> systemData;
 
 	public void beforeAction() {
-		systemData = Maps.newHashMap();
-		systemData.put("title", "我的紀念日");
-		systemData.put("connected", session("connected"));
+		params.putString("title", "我的紀念日");
+		params.putString("connected", session("connected"));
 	}
 
 	public Result afterAction() {
-		return ok(views.html.index.render(systemData, formRows, formData));
+		return ok(views.html.index.render(params, formRows, formData));
 	}
 
 	public Result login() {
