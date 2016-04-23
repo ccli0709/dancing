@@ -1,39 +1,37 @@
 @(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.WeekClass] , headers: Map[String, String] , rows:
 List[Form[forms.WeekClassForm]]) @main(params) { } {
 
-<div class="row">
-	<div class="col-md-2">
-		<select
-			class="form-control"
-			id="selChoreographies">
-			@for((key, value) <- params.getMap("choreographies")){
-			<option value="@key">@value</option>
-			}
-		</select>
-	</div>
-	<div class="col-md-2">
-		<select
-			class="form-control"
-			id="selLocations">
-			@for((key, value) <- params.getMap("locations")){
-			<option value="@key">@value</option>
-			}
-		</select>
-	</div>
-	<div class="col-md-2">
-		<select
-			class="form-control"
-			id="selLevels">
-			@for((key, value) <- params.getMap("levels")){
-			<option value="@key">@value</option>
-			}
-		</select>
-	</div>
+<div
+	class="row"
+	style="margin-bottom: 1em">
+	<div class="col-md-12">
+		<form class="form-inline">
+			<select
+				class="form-control"
+				id="selChoreographies">
+				@for((key, value) <- params.getMap("choreographies")){
+				<option value="@key">@value</option>
+				}
+			</select>
+			<select
+				class="form-control"
+				id="selLocations">
+				@for((key, value) <- params.getMap("locations")){
+				<option value="@key">@value</option>
+				}
+			</select>
 
-	<div class="col-md-2">
-		<button
-			class="btn btn-info"
-			id="btnQuery">�閰�</button>
+			<select
+				class="form-control"
+				id="selLevels">
+				@for((key, value) <- params.getMap("levels")){
+				<option value="@key">@value</option>
+				}
+			</select>
+			<button
+				class="btn btn-info"
+				id="btnQuery">查詢</button>
+		</form>
 	</div>
 </div>
 <div class="row">
@@ -92,7 +90,7 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 			@for(row <- rows) {
 			<tr>
 				<td>
-					<a href='@(routes.WeekClassDetail.index(1))'>@row("id").value</a>
+					<a href='@(routes.WeekClassDetail.index(Long.parseLong(row("id").value)))'>@row("id").value</a>
 				</td>
 				<td>@row("danceDivision").value</td>
 				<td>@row("choreography").value</td>

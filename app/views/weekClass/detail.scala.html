@@ -1,5 +1,4 @@
-@(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.WeekClass] , headers: Map[String, String] , rows:
-List[Form[forms.WeekClassForm]]) @main(params) { } {
+@(params: forms.PageParams, form: Form[forms.WeekClassForm]) @main(params) { } {
 
 <div
 	class="row"
@@ -17,7 +16,9 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 			</div>
 			<button class="btn btn-info">查詢</button>
 			<code style='margin-left: 3em'>維護功能</code>
-			<button class="btn btn-primary">新增</button>
+			<button
+				class="btn btn-primary"
+				id="btnCreate">新增</button>
 			<button class="btn btn-warning">修改</button>
 			<button class="btn btn-danger">刪除</button>
 		</form>
@@ -35,96 +36,142 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 			</ul>
 
 			<div id="tabs-1">
-				<table class='table table-border'>
-					<tr>
-						<th
-							class='info'
-							style='width: 100px'>上課代碼</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-						<th
-							class='info'
-							style='width: 100px'>級別</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-					</tr>
-					<tr>
-						<th class='info'>舞科</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-						<th class='info'>舞碼</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-					</tr>
-					<tr>
-						<th class='info'>星期</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-						<th class='info'>時段</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-					</tr>
-					<tr>
-						<th class='info'>起始時間</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-						<th class='info'>結束時間</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-					</tr>
-					<tr>
-						<th class='info'>起始日期</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-						<th class='info'>結束日期</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-					</tr>
-					<tr>
-						<th class='info'>課堂</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-						<th class='info'>地點</th>
-						<td>
-							<input
-								type="text"
-								class="form-control"></input>
-						</td>
-					</tr>
-				</table>
+				<form
+					class="main"
+					method="post"
+					action="@request.uri">
+					<table class='table table-border'>
+						<tr>
+							<th
+								class='info'
+								style='width: 100px'>上課代碼</th>
+							<td>
+								<span class="label label-pill label-default">@form("id").value</span>
+							</td>
+							<th
+								class='info'
+								style='width: 100px'>級別</th>
+							<td>
+								<select
+									name='level'
+									class="form-control"
+									id="selLevels">
+									@for((key, value) <- params.getMap("levels")){ @if(value.equals(form("level").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th class='info'>舞科</th>
+							<td>
+								<input
+									name='danceDivision'
+									type="text"
+									class="form-control"
+									value='@form("danceDivision").value'></input>
+							</td>
+							<th class='info'>舞碼</th>
+							<td>
+								<select
+									name='choreography'
+									class="form-control"
+									id="selChoreographies">
+									@for((key, value) <- params.getMap("choreographies")){ @if(value.equals(form("choreography").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th class='info'>星期</th>
+							<td>
+								<input
+									name="dayOfWeek"
+									type="text"
+									class="form-control"
+									value='@form("dayOfWeek").value'></input>
+							</td>
+							<th class='info'>時段</th>
+							<td>
+								<input
+									name='period'
+									type="text"
+									class="form-control"
+									value='@form("period").value'></input>
+							</td>
+						</tr>
+						<tr>
+							<th class='info'>起始時間</th>
+							<td>
+								<input
+									name='beginTime'
+									type="text"
+									class="form-control"
+									value='@form("beginTime").value'></input>
+							</td>
+							<th class='info'>結束時間</th>
+							<td>
+								<input
+									name='endTime'
+									type="text"
+									class="form-control"
+									value='@form("endTime").value'></input>
+							</td>
+						</tr>
+						<tr>
+							<th class='info'>起始日期</th>
+							<td>
+								<input
+									name='beginDate'
+									type="text"
+									class="form-control"
+									value='@form("beginDate").value'></input>
+							</td>
+							<th class='info'>結束日期</th>
+							<td>
+								<input
+									name='endDate'
+									type="text"
+									class="form-control"
+									value='@form("endDate").value'></input>
+							</td>
+						</tr>
+						<tr>
+							<th class='info'>課堂</th>
+							<td>
+								<input
+									name='quantity'
+									type="text"
+									class="form-control"
+									value='@form("quantity").value'></input>
+							</td>
+							<th class='info'>地點</th>
+							<td>
+								<select
+									name='location'
+									class="form-control"
+									id="selLocations">
+									@for((key, value) <- params.getMap("locations")){ @if(value.equals(form("location").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
+							</td>
+						</tr>
+					</table>
+				</form>
 			</div>
 
 		</div>
@@ -134,6 +181,17 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 <script>
 	$(function() {
 		$("#tabs").tabs();
+
+		// 讓按鈕不必放在FORM裡面
+		$("#btnCreate").click(function() {
+			$('<input>').attr({
+				type : 'hidden',
+				name : '_action',
+				value : 'create'
+			}).appendTo('form.main');
+			$('form.main').submit();
+			return false;
+		});
 	});
 </script>
 }

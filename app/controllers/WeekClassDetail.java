@@ -3,10 +3,15 @@ package controllers;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.avaje.ebean.PagedList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -22,6 +27,7 @@ public class WeekClassDetail extends Controller {
 	List<Form<forms.WeekClassForm>> rows;
 
 	// Detail
+	Form<forms.WeekClassForm> form;
 
 	public void beforeAction() {
 
@@ -46,7 +52,7 @@ public class WeekClassDetail extends Controller {
 		locations.put("小港中鋼舞蹈教室", "小港中鋼舞蹈教室");
 		locations.put("鳳山青年公園（婦幼館旁）", "鳳山青年公園（婦幼館旁）");
 		params.putMap("locations", locations);
-		
+
 		// 位置下拉選單
 		Map<String, String> levels = Maps.newLinkedHashMap();
 		levels.put("", "選擇級別");
@@ -54,7 +60,6 @@ public class WeekClassDetail extends Controller {
 		levels.put("標準", "標準");
 		levels.put("困難", "困難");
 		params.putMap("levels", levels);
-
 
 		// 分頁相關參數
 		queryParams = new forms.QueryParams(request());
@@ -66,13 +71,68 @@ public class WeekClassDetail extends Controller {
 	}
 
 	public Result afterAction() {
-		return ok(views.html.weekClass.detail.render(params, page, forms.WeekClassForm.getHeaders(), rows));
+		return ok(views.html.weekClass.detail.render(params, form));
+	}
+
+	public Result post(Long id) {
+		beforeAction();
+
+		DynamicForm data = Form.form().bindFromRequest();
+		String action = data.get("_action");
+
+		if ("create".equals(action)) {
+			Long createdId = create();
+			// 新增成功會取得新的ID，就以新的ID導到查詢頁面
+			if (createdId > 0)
+				return redirect(controllers.routes.WeekClassDetail.index(createdId));
+		}
+
+		// else if ("update".equals(action))
+		// return update();
+		// else if ("delete".equals(action))
+		// return delete();
+
+		return afterAction();
+	}
+
+	private Long create() {
+		Long createdId = 0L;
+
+		form = Form.form(forms.WeekClassForm.class).bindFromRequest();
+		// 這裡先不用FORM的VALIDATION
+		if (form.hasErrors()) {
+			loadPage(false);
+			flash("error", String.format("表單輸入內容有誤，更新失敗。"));
+		} else {
+			forms.WeekClassForm formData = form.get();
+			models.WeekClass weekClass = new models.WeekClass();
+			weekClass.setDanceDivision(formData.danceDivision);
+			weekClass.setChoreography(formData.choreography);
+			weekClass.setDayOfWeek(formData.dayOfWeek);
+			weekClass.setPeriod(formData.period);
+			weekClass.setBeginTime(formData.beginTime);
+			weekClass.setEndTime(formData.endTime);
+
+			DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd");
+			weekClass.setBeginDate(f.parseDateTime(formData.getBeginDate()));
+			weekClass.setEndDate(f.parseDateTime(formData.getEndDate()));
+
+			weekClass.setLevel(formData.level);
+			weekClass.setQuantity(Long.parseLong(formData.getQuantity()));
+			weekClass.setLocation(formData.location);
+			weekClass.save();
+
+			createdId = weekClass.getId();
+		}
+
+		return createdId;
 	}
 
 	public Result index(Long id) {
 
 		beforeAction();
 
+		queryParams.setId(id);
 		loadPage(true);
 
 		return afterAction();
@@ -84,12 +144,19 @@ public class WeekClassDetail extends Controller {
 	 */
 	private void loadPage(boolean reload) {
 
-		page = models.WeekClass.getPagedList(queryParams);
-		rows = Lists.newArrayList();
-		for (models.WeekClass item : page.getList()) {
-			Form<forms.WeekClassForm> form = Form.form(forms.WeekClassForm.class).fill(new forms.WeekClassForm(item));
-			rows.add(form);
-		}
+		// 多筆，目前都先包成Form
+		// page = models.WeekClass.getPagedList(queryParams);
+		// rows = Lists.newArrayList();
+		// for (models.WeekClass item : page.getList()) {
+		// Form<forms.WeekClassForm> form =
+		// Form.form(forms.WeekClassForm.class).fill(new
+		// forms.WeekClassForm(item));
+		// rows.add(form);
+		// }
+
+		// 單筆，目前都先包成Form
+		models.WeekClass item = models.WeekClass.find.byId(queryParams.getId());
+		form = Form.form(forms.WeekClassForm.class).fill(new forms.WeekClassForm(item));
 
 		// List<Anniversary> anniversaries = Anniversary.findAll();
 		// formRows = Lists.newArrayList();

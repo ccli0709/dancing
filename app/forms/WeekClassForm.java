@@ -2,6 +2,7 @@ package forms;
 
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -14,8 +15,10 @@ public class WeekClassForm {
 
 	public WeekClassForm(models.WeekClass weekClass) {
 
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
+		if (weekClass == null)
+			return;
 
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
 		this.id = String.format("%03d", weekClass.getId());
 
 		this.danceDivision = weekClass.getDanceDivision();
@@ -29,7 +32,7 @@ public class WeekClassForm {
 		this.endDate = fmt.print(weekClass.getEndDate());
 
 		this.level = weekClass.getLevel();
-		this.quantity = weekClass.getQuantity();
+		this.quantity = weekClass.getQuantity() == null ? "0" : weekClass.getQuantity().toString();
 		this.location = weekClass.getLocation();
 	}
 
@@ -40,11 +43,59 @@ public class WeekClassForm {
 	public String period;
 	public String beginTime;
 	public String endTime;
-	public String beginDate;
-	public String endDate;
+	protected String beginDate;
+	protected String endDate;
 	public String level;
-	public Long quantity;
+	protected String quantity;
 	public String location;
+
+	public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd");
+		String value = DateTime.now().toString(f);
+
+		try {
+			DateTime d = f.parseDateTime(beginDate);
+			value = d.toString(f);
+		} catch (Exception e) {
+		}
+		this.beginDate = value;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd");
+		String value = DateTime.now().toString(f);
+
+		try {
+			DateTime d = f.parseDateTime(endDate);
+			value = d.toString(f);
+		} catch (Exception e) {
+		}
+		this.endDate = value;
+	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+
+		Long value = 0L;
+		try {
+			value = Long.parseLong(quantity);
+		} catch (Exception e) {
+		}
+		value = Math.max(value, 0L);
+
+		this.quantity = value.toString();
+	}
 
 	public static Map<String, String> getHeaders() {
 		Map<String, String> headers = Maps.newLinkedHashMap();
