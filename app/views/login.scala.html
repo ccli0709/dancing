@@ -1,0 +1,74 @@
+@(params: forms.PageParams, form: Form[forms.LoginForm]) @main(params) {
+<link
+	rel="stylesheet"
+	media="screen"
+	href='@routes.Assets.versioned("stylesheets/login.css")'>
+
+<style>
+</style>
+} {
+
+<form
+	class="form-signin"
+	method="post"
+	action="@request.uri">
+	<h2 class="form-signin-heading">登入管理介面</h2>
+	<label
+		for="inputEmail"
+		class="sr-only">Email address</label>
+	<input
+		type="email"
+		name='email'
+		id="inputEmail"
+		class="form-control"
+		placeholder="請輸入電子郵件"
+		value='@form("email").value'
+		required
+		autofocus>
+	@for(err <- form("email").errors) {
+	<div
+		class="alert alert-danger"
+		role="alert"
+		style="margin: 0.5em 0; padding: 0.5em">@Messages(err.message, err.arguments())</div>
+	}
+
+	<label
+		for="inputPassword"
+		class="sr-only">Password</label>
+	<input
+		type="password"
+		name='password'
+		id="inputPassword"
+		class="form-control"
+		placeholder="請輸入密碼"
+		value='@form("password").value'>
+	@for(err <- form("password").errors) {
+	<div
+		class="alert alert-danger"
+		role="alert"
+		style="margin: 0.5em 0; padding: 0.5em">@Messages(err.message, err.arguments())</div>
+	}
+	<!-- 	<div class="checkbox"> -->
+	<!-- 		<label> -->
+	<!-- 			<input -->
+	<!-- 				type="checkbox" -->
+	<!-- 				value="remember-me"> -->
+	<!-- 			Remember me -->
+	<!-- 		</label> -->
+	<!-- 	</div> -->
+	<button
+		class="btn btn-lg btn-primary btn-block"
+		type="submit">Sign in</button>
+	<div
+		class="alert alert-info"
+		role="alert"
+		style="margin: 0.5em 0 0 0; padding: 0.5em">
+		測試帳號密碼為
+		<code>test@@gmail.com</code>
+	</div>
+</form>
+} {
+<script>
+	
+</script>
+}
