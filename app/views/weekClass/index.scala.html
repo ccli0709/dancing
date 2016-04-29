@@ -10,14 +10,22 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				class="form-control"
 				id="selChoreographies">
 				@for((key, value) <- params.getMap("choreographies")){
-				<option value="@key">@value</option>
+					@if(key.equals(params.getString("read_choreography"))) {
+						<option value="@key" selected>@value</option>
+					}else{
+						<option value="@key">@value</option>
+					}
 				}
 			</select>
 			<select
 				class="form-control"
 				id="selLocations">
 				@for((key, value) <- params.getMap("locations")){
-				<option value="@key">@value</option>
+					@if(key.equals(params.getString("read_location"))) {
+						<option value="@key" selected>@value</option>
+					}else{
+						<option value="@key">@value</option>
+					}
 				}
 			</select>
 
@@ -25,7 +33,11 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				class="form-control"
 				id="selLevels">
 				@for((key, value) <- params.getMap("levels")){
-				<option value="@key">@value</option>
+					@if(key.equals(params.getString("read_level"))) {
+						<option value="@key" selected>@value</option>
+					}else{
+						<option value="@key">@value</option>
+					}
 				}
 			</select>
 			<button
@@ -49,7 +61,7 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				</li>
 				}
 				<li class="current">
-					<a>蝚� @page.getDisplayXtoYofZ("-"," 蝑� / � ") 蝑�</a>
+					<a>第 @page.getDisplayXtoYofZ("-"," 筆 / 共 ") 筆</a>
 				</li>
 				@if(page.hasNext) {
 				<li>
@@ -115,12 +127,14 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 		$("#btnQuery").click(function() {
 			var url = "@(routes.WeekClassMaster.index())?q=";
 			if ($("#selChoreographies").val() != "")
-				url += "choreography:" + $("#selChoreographies").val() + ",";
+				url += "choreography:" + encodeURI($("#selChoreographies").val()) + ",";
 			if ($("#selLocations").val() != "")
-				url += "location:" + $("#selLocations").val() + ",";
+				url += "location:" + encodeURI($("#selLocations").val()) + ",";
 			if ($("#selLevels").val() != "")
-				url += "level:" + $("#selLevels").val() + ",";
+				url += "level:" + encodeURI($("#selLevels").val()) + ",";
 			window.location = url;
+			
+			return false;
 		});
 
 	});

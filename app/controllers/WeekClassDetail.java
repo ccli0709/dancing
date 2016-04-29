@@ -85,13 +85,19 @@ public class WeekClassDetail extends Controller {
 			// 新增成功會取得新的ID，就以新的ID導到查詢頁面
 			if (createdId > 0)
 				return redirect(controllers.routes.WeekClassDetail.index(createdId));
+		} else if ("delete".equals(action)) {
+			Long deletedId = delete();
+			// 刪除成功會取得已刪除ID，否則便是刪除有錯
+			if (deletedId > 0) {
+				String laststQuery = utils.StringUtils.getStringValue(session("LATEST_QUERY"), "");
+				if (laststQuery.length() == 0)
+					return redirect(controllers.routes.WeekClassMaster.index());
+				else
+					return redirect(laststQuery);
+			}
+		} else if ("update".equals(action)) {
+			Long updatedId = update();
 		}
-
-		// else if ("update".equals(action))
-		// return update();
-		// else if ("delete".equals(action))
-		// return delete();
-
 		return afterAction();
 	}
 
@@ -112,13 +118,11 @@ public class WeekClassDetail extends Controller {
 			weekClass.setPeriod(formData.period);
 			weekClass.setBeginTime(formData.beginTime);
 			weekClass.setEndTime(formData.endTime);
-
-			DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd");
-			weekClass.setBeginDate(f.parseDateTime(formData.getBeginDate()));
-			weekClass.setEndDate(f.parseDateTime(formData.getEndDate()));
-
+			weekClass
+					.setBeginDate(utils.StringUtils.getDateTimeValue(formData.beginDate, DateTime.now(), "yyyy-MM-dd"));
+			weekClass.setEndDate(utils.StringUtils.getDateTimeValue(formData.endDate, DateTime.now(), "yyyy-MM-dd"));
 			weekClass.setLevel(formData.level);
-			weekClass.setQuantity(Long.parseLong(formData.getQuantity()));
+			weekClass.setQuantity(utils.StringUtils.getLongValue(formData.quantity, 0L));
 			weekClass.setLocation(formData.location);
 			weekClass.save();
 
@@ -126,6 +130,67 @@ public class WeekClassDetail extends Controller {
 		}
 
 		return createdId;
+	}
+
+	private Long update() {
+		Long updatedId = 0L;
+
+		form = Form.form(forms.WeekClassForm.class).bindFromRequest();
+		// 這裡先不用FORM的VALIDATION
+		if (form.hasErrors()) {
+			loadPage(false);
+			flash("error", String.format("表單輸入內容有誤，更新失敗。"));
+		} else {
+			forms.WeekClassForm formData = form.get();
+
+			updatedId = utils.StringUtils.getLongValue(formData.id, 0L);
+
+			models.WeekClass weekClass = models.WeekClass.find.byId(updatedId);
+			weekClass.setDanceDivision(formData.danceDivision);
+			weekClass.setChoreography(formData.choreography);
+			weekClass.setDayOfWeek(formData.dayOfWeek);
+			weekClass.setPeriod(formData.period);
+			weekClass.setBeginTime(formData.beginTime);
+			weekClass.setEndTime(formData.endTime);
+			weekClass
+					.setBeginDate(utils.StringUtils.getDateTimeValue(formData.beginDate, DateTime.now(), "yyyy-MM-dd"));
+			weekClass.setEndDate(utils.StringUtils.getDateTimeValue(formData.endDate, DateTime.now(), "yyyy-MM-dd"));
+			weekClass.setLevel(formData.level);
+			weekClass.setQuantity(utils.StringUtils.getLongValue(formData.quantity, 0L));
+			weekClass.setLocation(formData.location);
+			weekClass.update();
+
+			queryParams.setId(updatedId);
+			loadPage(true);
+			flash("success", String.format("課程資料更新完成（編號%s）。", updatedId));
+		}
+
+		return updatedId;
+	}
+
+	private Long delete() {
+		Long deletedId = 0L;
+
+		form = Form.form(forms.WeekClassForm.class).bindFromRequest();
+		// 這裡先不用FORM的VALIDATION
+		if (form.hasErrors()) {
+			loadPage(false);
+			flash("error", String.format("表單輸入內容有誤，更新失敗。"));
+		} else {
+
+			forms.WeekClassForm formData = form.get();
+			deletedId = utils.StringUtils.getLongValue(formData.id, 0L);
+			models.WeekClass weekClass = models.WeekClass.find.byId(deletedId);
+			weekClass.delete();
+
+			flash("success", String.format("課程資料刪除完成（編號%s）。", deletedId));
+		}
+
+		return deletedId;
+	}
+
+	public Result aaa() {
+		return index(0L);
 	}
 
 	public Result index(Long id) {

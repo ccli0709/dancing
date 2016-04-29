@@ -12,15 +12,22 @@
 				<input
 					type="text"
 					class="form-control"
-					aria-label="Amount (to the nearest dollar)">
+					id="txbReadId"
+					value='@form("id").value'>
 			</div>
-			<button class="btn btn-info">查詢</button>
+			<button
+				class="btn btn-info"
+				id="btnRead">查詢</button>
 			<code style='margin-left: 3em'>維護功能</code>
 			<button
 				class="btn btn-primary"
 				id="btnCreate">新增</button>
-			<button class="btn btn-warning">修改</button>
-			<button class="btn btn-danger">刪除</button>
+			<button
+				class="btn btn-warning"
+				id="btnUpdate">修改</button>
+			<button
+				class="btn btn-danger"
+				id="btnDelete">刪除</button>
 		</form>
 	</div>
 </div>
@@ -47,6 +54,10 @@
 								style='width: 100px'>上課代碼</th>
 							<td>
 								<span class="label label-pill label-default">@form("id").value</span>
+								<input
+									type="hidden"
+									name="id"
+									value='@form("id").value' />
 							</td>
 							<th
 								class='info'
@@ -182,12 +193,40 @@
 	$(function() {
 		$("#tabs").tabs();
 
+		$("#btnRead").click(function() {
+			var id = $("#txbReadId").val();
+			var url = '@(routes.WeekClassDetail.aaa())/' + id;
+			window.location = url;
+			return false;
+		});
+
 		// 讓按鈕不必放在FORM裡面
 		$("#btnCreate").click(function() {
 			$('<input>').attr({
 				type : 'hidden',
 				name : '_action',
 				value : 'create'
+			}).appendTo('form.main');
+			$('form.main').submit();
+			return false;
+		});
+
+		// 讓按鈕不必放在FORM裡面
+		$("#btnUpdate").click(function() {
+			$('<input>').attr({
+				type : 'hidden',
+				name : '_action',
+				value : 'update'
+			}).appendTo('form.main');
+			$('form.main').submit();
+			return false;
+		});
+
+		$("#btnDelete").click(function() {
+			$('<input>').attr({
+				type : 'hidden',
+				name : '_action',
+				value : 'delete'
 			}).appendTo('form.main');
 			$('form.main').submit();
 			return false;

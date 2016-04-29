@@ -43,59 +43,11 @@ public class WeekClassForm {
 	public String period;
 	public String beginTime;
 	public String endTime;
-	protected String beginDate;
-	protected String endDate;
+	public String beginDate;
+	public String endDate;
 	public String level;
-	protected String quantity;
+	public String quantity;
 	public String location;
-
-	public String getBeginDate() {
-		return beginDate;
-	}
-
-	public void setBeginDate(String beginDate) {
-		DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd");
-		String value = DateTime.now().toString(f);
-
-		try {
-			DateTime d = f.parseDateTime(beginDate);
-			value = d.toString(f);
-		} catch (Exception e) {
-		}
-		this.beginDate = value;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd");
-		String value = DateTime.now().toString(f);
-
-		try {
-			DateTime d = f.parseDateTime(endDate);
-			value = d.toString(f);
-		} catch (Exception e) {
-		}
-		this.endDate = value;
-	}
-
-	public String getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(String quantity) {
-
-		Long value = 0L;
-		try {
-			value = Long.parseLong(quantity);
-		} catch (Exception e) {
-		}
-		value = Math.max(value, 0L);
-
-		this.quantity = value.toString();
-	}
 
 	public static Map<String, String> getHeaders() {
 		Map<String, String> headers = Maps.newLinkedHashMap();

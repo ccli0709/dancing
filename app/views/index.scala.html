@@ -1,98 +1,37 @@
-@(params: forms.PageParams, formRows: List[Form[forms.AnniversaryForm]], formData: Form[forms.AnniversaryForm])
-@main(params) { } {
+@(params: forms.PageParams) @main(params) {
+<style>
+</style>
+} {
 
-<div class="row marketing">
-	<div class="col-lg-12">
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="jumbotron well">
+				<h2>教師經歷</h2>
+				<p>曾榮獲多項職業組冠軍，教師證照，歷經中鋼、長庚、社教館、順岑里、漢民國小、宏亮舞社、六苓舞社、國財局、五甲社福中心、文化中心、鳳凌廣場、小港教室等指導老師，社團開班授課達十幾年，身段札實，教學經驗豐富</p>
+				<p>
+					<a
+						class="btn btn-primary btn-large"
+						href="#">了解更多 »</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<h2><span class="label label-info">開課訊息</span></h2>
+			<p>104.12.30週三中鋼新開一期，A班基礎倫巴，B班森巴，歡迎大家參加！</p>
+			
+		</div>
+		<div class="col-md-4">
+			<h2><span class="label label-warning">停課通知</span></h2>
+			<p>105.01.23週六8點文化中心華爾滋，停課一次。</p>
+		</div>
 
-		<table class="table table-striped">
-			@for(form <- formRows) {
-			<tr>
-				<td style='width: 140px'>@form("name").value</td>
-				<td style='width: 140px'>@form("date").value</td>
-				<td>@form("passedDays").value</td>
-				@if("ccli0709@gmail.com".equals(params.getString("connected"))) {
-				<td>
-					<form
-						action="@routes.Application.post()"
-						method="post">
-						<input
-							type="hidden"
-							name="id"
-							value='@form("id").value' />
-						<button
-							type="submit"
-							name="_action"
-							value="delete"
-							class="btn btn-danger btnsDelete">刪除</button>
-					</form>
-				</td>
-				}
-			</tr>
-
-			}
-			<form
-				action="@routes.Application.post()"
-				method="post">
-			<tr>
-				<td>
-					<input
-						type="text"
-						name="name"
-						class="form-control"
-						value='@formData("name").value'>
-					@for(err <- formData("name").errors) {
-					<div
-						class="alert alert-danger"
-						role="alert"
-						style="margin: 0.5em 0 0 0; padding: 0.5em">@Messages(err.message, err.arguments())</div>
-					}
-				</td>
-				<td>
-					<input
-						type="text"
-						name="date"
-						class="form-control"
-						value='@formData("date").value'>
-					@for(err <- formData("date").errors) {
-					<div
-						class="alert alert-danger"
-						role="alert"
-						style="margin: 0.5em 0 0 0; padding: 0.5em">@Messages(err.message, err.arguments())</div>
-					}
-				</td>
-				<td></td>
-				@if("ccli0709@gmail.com".equals(params.getString("connected"))) {
-				<td>
-					<button
-						type="submit"
-						name="_action"
-						value="create"
-						class="btn btn-primary">新增</button>
-				</td>
-				}
-			</tr>
-			</form>
-		</table>
 	</div>
 </div>
 } {
 <script>
-	$(function() {
-		$(".btnsDelete").click(
-				function() {
-					var _form = $(this).parent();
-					bootbox.confirm("確定要刪除這筆資料嗎?", function(result) {
-						if (result) {
-							$('<input />').attr('type', 'hidden').attr(
-									'name', "_action")
-									.attr('value', "delete").appendTo(_form);
-							_form.submit();
-						}
-					});
-
-					return false;
-				});
-
-	});
+	
 </script>
 }

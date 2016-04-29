@@ -4,11 +4,12 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-POST    /                           controllers.Application.post()
+POST     /login                      controllers.Application.validate()
 GET     /login                      controllers.Application.login()
 GET     /logout                     controllers.Application.logout()
 
-GET     /class/week                 controllers.WeekClassMaster.index()
+GET     /class/weeks                controllers.WeekClassMaster.index()
+GET     /class/week                 controllers.WeekClassDetail.aaa()
 GET     /class/week/:id             controllers.WeekClassDetail.index(id: Long)
 POST    /class/week/:id             controllers.WeekClassDetail.post(id: Long)
 

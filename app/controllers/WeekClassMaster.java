@@ -3,12 +3,14 @@ package controllers;
 import java.util.List;
 import java.util.Map;
 
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.PagedList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
 public class WeekClassMaster extends Controller {
@@ -46,7 +48,7 @@ public class WeekClassMaster extends Controller {
 		locations.put("小港中鋼舞蹈教室", "小港中鋼舞蹈教室");
 		locations.put("鳳山青年公園（婦幼館旁）", "鳳山青年公園（婦幼館旁）");
 		params.putMap("locations", locations);
-		
+
 		// 位置下拉選單
 		Map<String, String> levels = Maps.newLinkedHashMap();
 		levels.put("", "選擇級別");
@@ -55,13 +57,27 @@ public class WeekClassMaster extends Controller {
 		levels.put("困難", "困難");
 		params.putMap("levels", levels);
 
-
 		// 分頁相關參數
 		queryParams = new forms.QueryParams(request());
 		params.putString("pageIndex", String.valueOf(queryParams.getPageIndex()));
 		params.putString("sortField", queryParams.getSortField());
 		params.putString("sortDirection", queryParams.getSortDirection());
 		params.putString("queryString", queryParams.getQueryString());
+
+		// 取得本次查詢用的參數
+		List<String> allowedFields = Lists.newArrayList("choreography", "location", "level");
+		for (String query : queryParams.getQueryString().split(",")) {
+
+			String[] tokens = query.split(":");
+			if (tokens.length != 2)
+				continue;
+
+			for (String field : allowedFields) {
+				if (field.equals(tokens[0])) {
+					params.putString("read_" + field, tokens[1]);
+				}
+			}
+		}
 
 	}
 
@@ -72,6 +88,9 @@ public class WeekClassMaster extends Controller {
 	public Result index() {
 
 		beforeAction();
+
+		// 記錄最後一次查詢路徑，做為編輯完畢導回用的
+		session("LATEST_QUERY", request().uri());
 
 		loadPage(true);
 

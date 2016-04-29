@@ -39,6 +39,10 @@
 	rel="stylesheet"
 	href='@routes.Assets.versioned("stylesheets/jumbotron-narrow.css")'>
 
+<link
+	rel="stylesheet"
+	href='@routes.Assets.versioned("stylesheets/sticky-footer.css")'>
+
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
@@ -69,75 +73,113 @@
 
 <body>
 
-	<div class="container">
-		<div class="header clearfix">
-			<nav class="navbar navbar-default navbar-fixed-top">
-				<div class="container-fluid">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+
+				<nav
+					class="navbar navbar-default"
+					role="navigation">
 					<div class="navbar-header">
+
+						<button
+							type="button"
+							class="navbar-toggle"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
 						<a
 							class="navbar-brand"
-							href="#">舞蹈課程維護</a>
+							href="#">妍蓁舞蹈班</a>
 					</div>
-					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="@routes.WeekClassMaster.index()">每周上課清單</a>
-						</li>
-						<li>
-							<a href="#">功能二</a>
-						</li>
-						<li>
-							<a href="#">功能三</a>
-						</li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						@if(!"ccli0709@gmail.com".equals(params.getString("connected"))) {
-						<li>
-							<a href="#">
-								<span class="glyphicon glyphicon-user"></span>
-								ccli0709
-							</a>
-						</li>
-						<li>
-							<a href="@routes.Application.logout()">
-								<span class="glyphicon glyphicon-log-in"></span>
-								登出
-							</a>
-						</li>
-						}else{
 
-						<li>
-							<a href="@routes.Application.login()">
-								<span class="glyphicon glyphicon-user"></span>
-								登入
-							</a>
-						</li>
-						}
-					</ul>
-				</div>
-			</nav>
-			<nav></nav>
-			<h3 class="text-muted">@params.getString("title")</h3>
+					<div
+						class="collapse navbar-collapse"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="@routes.Application.index()">首頁</a>
+							</li>
+
+							<li>
+								<a href="@routes.WeekClassMaster.index()">每周上課清單</a>
+							</li>
+							<li>
+								<a href="#">拉丁舞課程</a>
+							</li>
+							<li>
+								<a href="#">摩登舞課程</a>
+							</li>
+							<li>
+								<a href="#">每堂上課期間</a>
+							</li>
+							<li>
+								<a href="#">上課環境介紹</a>
+							</li>
+
+						</ul>
+
+						<ul class="nav navbar-nav navbar-right">
+							@if("ccli0709@gmail.com".equals(params.getString("connected"))) {
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-user"></span>
+									ccli0709
+								</a>
+							</li>
+							<li>
+								<a href="@routes.Application.logout()">
+									<span class="glyphicon glyphicon-log-in"></span>
+									登出
+								</a>
+							</li>
+							}else{
+
+							<li>
+								<a href="@routes.Application.login()">
+									<span class="glyphicon glyphicon-user"></span>
+									登入
+								</a>
+							</li>
+							}
+						</ul>
+					</div>
+
+				</nav>
+			</div>
 		</div>
+
+
 		<div class="row">
+			@if(flash.containsKey("success")){
 			<div
 				class="alert alert-success"
 				style='padding: 6px'
-				role="alert">系統訊息：上課資料查詢完成。</div>
+				role="alert">系統訊息：@flash.get("success")</div>
+			} @if(flash.containsKey("error")){
+			<div
+				class="alert alert-danger"
+				style='padding: 6px'
+				role="alert">系統訊息：@flash.get("error")</div>
+			}
 		</div>
 		@content
 
-		<footer class="footer">
-			<p>
-				&copy; 1980-9999
-				<span class="label label-primary">ccli0709</span>
-				<code>@@gmail.com</code>
-			</p>
-		</footer>
 
 	</div>
 	<!-- /container -->
-
-
+	
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">&copy; 1980-9999
+			<span class="label label-primary">ccli0709</span>
+			<code>@@gmail.com</code></p>
+      </div>
+    </footer>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
