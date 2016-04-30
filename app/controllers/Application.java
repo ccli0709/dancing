@@ -28,7 +28,9 @@ public class Application extends Controller {
 
 	public void beforeAction() {
 		params.putString("title", "登入畫面");
-		params.putString("connected", session("connected"));
+		params.putString("loginUid", session("loginUid"));
+		params.putString("loginEmail", session("loginEmail"));
+		params.putString("loginName", session("loginName"));
 	}
 
 	public Result afterAction() {
@@ -51,17 +53,19 @@ public class Application extends Controller {
 			flash("error", String.format("登入失敗。"));
 			return ok(views.html.login.render(params, form));
 		} else {
-			session("connected", "ccli0709@gmail.com");
+			session("loginUid", "1");
+			session("loginEmail", "ccli0709@gmail.com");
+			session("loginName", "李政忠");
 			flash("success", String.format("登入成功。"));
-			return redirect(controllers.routes.Application.index());
+			return redirect(routes.Application.index());
 		}
 
 	}
 
 	// 登出後導向首頁
 	public Result logout() {
-		session().remove("connected");
-		return redirect(controllers.routes.Application.index());
+		session().clear();
+		return redirect(routes.Application.index());
 	}
 
 	public Result index() {
