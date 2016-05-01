@@ -3,12 +3,17 @@
 
 # --- !Ups
 
-create table anniversary (
+create table setting (
   id                        bigint auto_increment not null,
-  name                      varchar(255),
-  user_id                   bigint,
-  date                      datetime,
-  constraint pk_anniversary primary key (id))
+  type                      varchar(255),
+  value1                    varchar(255),
+  value2                    varchar(255),
+  value3                    varchar(255),
+  value4                    varchar(255),
+  created_time              datetime,
+  updated_time              datetime,
+  deleted_time              datetime,
+  constraint pk_setting primary key (id))
 ;
 
 create table user (
@@ -35,8 +40,6 @@ create table week_class (
   constraint pk_week_class primary key (id))
 ;
 
-alter table anniversary add constraint fk_anniversary_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_anniversary_user_1 on anniversary (user_id);
 
 
 
@@ -44,7 +47,7 @@ create index ix_anniversary_user_1 on anniversary (user_id);
 
 SET FOREIGN_KEY_CHECKS=0;
 
-drop table anniversary;
+drop table setting;
 
 drop table user;
 
