@@ -29,9 +29,6 @@ public class User extends Model {
 	@Constraints.Required
 	protected String password;
 
-	@OneToMany(mappedBy = "user")
-	public List<Anniversary> Anniversaries;
-
 	public static Finder<Long, User> find = new Finder<Long, User>(User.class);
 
 	public static boolean authenticate(String email, String password) {
@@ -71,14 +68,6 @@ public class User extends Model {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<Anniversary> getAnniversaries() {
-		return Anniversaries;
-	}
-
-	public void setAnniversaries(List<Anniversary> anniversaries) {
-		Anniversaries = anniversaries;
 	}
 
 }

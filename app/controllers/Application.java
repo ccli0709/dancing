@@ -2,6 +2,7 @@ package controllers;
 
 import org.joda.time.DateTime;
 
+import models.Setting;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -73,7 +74,9 @@ public class Application extends Controller {
 		beforeAction();
 
 		loadPage(true);
-
+		// 取得教師經歷(H1)
+		models.Setting result = Setting.getTeacherExperience();
+		params.putString("experience", result.getValue1());
 		return afterAction();
 	}
 
