@@ -4,17 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.avaje.ebean.PagedList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 public class WeekClassDetail extends Controller {
 
@@ -33,7 +31,9 @@ public class WeekClassDetail extends Controller {
 
 		// common
 		params.putString("title", "每周上課清單");
-		params.putString("connected", session("connected"));
+		params.putString("loginUid", session("loginUid"));
+		params.putString("loginEmail", session("loginEmail"));
+		params.putString("loginName", session("loginName"));
 
 		// 舞碼下拉選單
 		Map<String, String> choreographies = Maps.newLinkedHashMap();
@@ -74,6 +74,18 @@ public class WeekClassDetail extends Controller {
 		return ok(views.html.weekClass.detail.render(params, form));
 	}
 
+	@Security.Authenticated(Secured.class)
+	public Result index(Long id) {
+
+		beforeAction();
+
+		queryParams.setId(id);
+		loadPage(true);
+
+		return afterAction();
+	}
+
+	@Security.Authenticated(Secured.class)
 	public Result post(Long id) {
 		beforeAction();
 
@@ -191,16 +203,6 @@ public class WeekClassDetail extends Controller {
 
 	public Result aaa() {
 		return index(0L);
-	}
-
-	public Result index(Long id) {
-
-		beforeAction();
-
-		queryParams.setId(id);
-		loadPage(true);
-
-		return afterAction();
 	}
 
 	/**

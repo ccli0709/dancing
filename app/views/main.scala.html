@@ -122,25 +122,24 @@
 						</ul>
 
 						<ul class="nav navbar-nav navbar-right">
-							@if("ccli0709@gmail.com".equals(params.getString("connected"))) {
+							@if(params.getString("loginUid").isEmpty) {
+							<li>
+								<a href="@routes.Application.login()">
+									<span class="glyphicon glyphicon-user"></span>
+									登入
+								</a>
+							</li>
+							}else{
 							<li>
 								<a href="#">
 									<span class="glyphicon glyphicon-user"></span>
-									ccli0709
+									@params.getString("loginName")
 								</a>
 							</li>
 							<li>
 								<a href="@routes.Application.logout()">
 									<span class="glyphicon glyphicon-log-in"></span>
 									登出
-								</a>
-							</li>
-							}else{
-
-							<li>
-								<a href="@routes.Application.login()">
-									<span class="glyphicon glyphicon-user"></span>
-									登入
 								</a>
 							</li>
 							}

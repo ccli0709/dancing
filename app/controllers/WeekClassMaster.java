@@ -29,7 +29,9 @@ public class WeekClassMaster extends Controller {
 
 		// common
 		params.putString("title", "每周上課清單");
-		params.putString("connected", session("connected"));
+		params.putString("loginUid", session("loginUid"));
+		params.putString("loginEmail", session("loginEmail"));
+		params.putString("loginName", session("loginName"));
 
 		// 舞碼下拉選單
 		Map<String, String> choreographies = Maps.newLinkedHashMap();
