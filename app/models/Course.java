@@ -17,7 +17,7 @@ import com.avaje.ebean.PagedList;
 import com.google.common.collect.Lists;
 
 @Entity
-public class WeekClass extends Model {
+public class Course extends Model {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,10 +50,10 @@ public class WeekClass extends Model {
 	// 上課地點
 	protected String location;
 
-	public static Finder<Long, WeekClass> find = new Finder<Long, WeekClass>(WeekClass.class);
+	public static Finder<Long, Course> find = new Finder<Long, Course>(Course.class);
 
-	public static PagedList<WeekClass> getPagedList(forms.QueryParams queryParams) {
-		ExpressionList<WeekClass> where = find.where();
+	public static PagedList<Course> getPagedList(forms.QueryParams queryParams) {
+		ExpressionList<Course> where = find.where();
 
 		if (queryParams.getQueryString().length() > 0) {
 

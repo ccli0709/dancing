@@ -54,14 +54,14 @@ public class SettingDetail extends Controller {
 			Long createdId = create();
 			// 新增成功會取得新的ID，就以新的ID導到查詢頁面
 			if (createdId > 0)
-				return redirect(controllers.routes.WeekClassDetail.index(createdId));
+				return redirect(controllers.routes.CourseDetail.index(createdId));
 		} else if ("delete".equals(action)) {
 			Long deletedId = delete();
 			// 刪除成功會取得已刪除ID，否則便是刪除有錯
 			if (deletedId > 0) {
 				String laststQuery = utils.StringUtils.getStringValue(session("LATEST_QUERY"), "");
 				if (laststQuery.length() == 0)
-					return redirect(controllers.routes.WeekClassMaster.index());
+					return redirect(controllers.routes.CourseMaster.index());
 				else
 					return redirect(laststQuery);
 			}

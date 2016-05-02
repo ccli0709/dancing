@@ -1,5 +1,5 @@
-@(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.WeekClass] , headers: Map[String, String] , rows:
-List[Form[forms.WeekClassForm]]) @main(params) { } {
+@(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.Course] , headers: Map[String, String] , rows:
+List[Form[forms.CourseForm]]) @main(params) { } {
 
 <div
 	class="row"
@@ -53,7 +53,7 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				@if(page.hasPrev) {
 				<li>
 					<a
-						href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex())&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.prevPage")</a>
+						href='@(routes.CourseMaster.index())?p=@(page.getPageIndex())&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.prevPage")</a>
 				</li>
 				} else {
 				<li class="disabled">
@@ -66,7 +66,7 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				@if(page.hasNext) {
 				<li>
 					<a
-						href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex()+2)&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.nextPage")</a>
+						href='@(routes.CourseMaster.index())?p=@(page.getPageIndex()+2)&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.nextPage")</a>
 				</li>
 				} else {
 				<li class="disabled">
@@ -87,12 +87,12 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 				@for((key, value) <- headers) {
 				<th>
 					@if(!value.isEmpty){
-					<a href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params.getString("queryString"))'>
+					<a href='@(routes.CourseMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params.getString("queryString"))'>
 						<i class="fa fa-sort-asc"></i>
 						</i>
 					</a>
 					} @key @if(!value.isEmpty){
-					<a href='@(routes.WeekClassMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params.getString("queryString"))'>
+					<a href='@(routes.CourseMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params.getString("queryString"))'>
 						<i class="fa fa-sort-desc"></i>
 					</a>
 					}
@@ -102,7 +102,7 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 			@for(row <- rows) {
 			<tr>
 				<td>
-					<a href='@(routes.WeekClassDetail.index(Long.parseLong(row("id").value)))'>@row("id").value</a>
+					<a href='@(routes.CourseDetail.index(Long.parseLong(row("id").value)))'>@row("id").value</a>
 				</td>
 				<td>@row("danceDivision").value</td>
 				<td>@row("choreography").value</td>
@@ -125,7 +125,7 @@ List[Form[forms.WeekClassForm]]) @main(params) { } {
 <script>
 	$(function() {
 		$("#btnQuery").click(function() {
-			var url = "@(routes.WeekClassMaster.index())?q=";
+			var url = "@(routes.CourseMaster.index())?q=";
 			if ($("#selChoreographies").val() != "")
 				url += "choreography:" + encodeURI($("#selChoreographies").val()) + ",";
 			if ($("#selLocations").val() != "")

@@ -13,15 +13,15 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
-public class WeekClassMaster extends Controller {
+public class CourseMaster extends Controller {
 
 	// 用於全局的參數
 	forms.PageParams params = new forms.PageParams();
 	forms.QueryParams queryParams;
 
 	// Master(List)
-	PagedList<models.WeekClass> page;
-	List<Form<forms.WeekClassForm>> rows;
+	PagedList<models.Course> page;
+	List<Form<forms.CourseForm>> rows;
 
 	// Detail
 
@@ -84,7 +84,7 @@ public class WeekClassMaster extends Controller {
 	}
 
 	public Result afterAction() {
-		return ok(views.html.weekClass.index.render(params, page, forms.WeekClassForm.getHeaders(), rows));
+		return ok(views.html.course.index.render(params, page, forms.CourseForm.getHeaders(), rows));
 	}
 
 	public Result index() {
@@ -105,10 +105,10 @@ public class WeekClassMaster extends Controller {
 	 */
 	private void loadPage(boolean reload) {
 
-		page = models.WeekClass.getPagedList(queryParams);
+		page = models.Course.getPagedList(queryParams);
 		rows = Lists.newArrayList();
-		for (models.WeekClass item : page.getList()) {
-			Form<forms.WeekClassForm> form = Form.form(forms.WeekClassForm.class).fill(new forms.WeekClassForm(item));
+		for (models.Course item : page.getList()) {
+			Form<forms.CourseForm> form = Form.form(forms.CourseForm.class).fill(new forms.CourseForm(item));
 			rows.add(form);
 		}
 

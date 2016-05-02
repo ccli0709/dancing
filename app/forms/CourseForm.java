@@ -8,32 +8,32 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.collect.Maps;
 
-public class WeekClassForm {
+public class CourseForm {
 
-	public WeekClassForm() {
+	public CourseForm() {
 	}
 
-	public WeekClassForm(models.WeekClass weekClass) {
+	public CourseForm(models.Course course) {
 
-		if (weekClass == null)
+		if (course == null)
 			return;
 
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
-		this.id = String.format("%03d", weekClass.getId());
+		this.id = String.format("%03d", course.getId());
 
-		this.danceDivision = weekClass.getDanceDivision();
-		this.choreography = weekClass.getChoreography();
-		this.dayOfWeek = weekClass.getDayOfWeek();
-		this.period = weekClass.getPeriod();
-		this.beginTime = weekClass.getBeginTime();
-		this.endTime = weekClass.getEndTime();
+		this.danceDivision = course.getDanceDivision();
+		this.choreography = course.getChoreography();
+		this.dayOfWeek = course.getDayOfWeek();
+		this.period = course.getPeriod();
+		this.beginTime = course.getBeginTime();
+		this.endTime = course.getEndTime();
 
-		this.beginDate = fmt.print(weekClass.getBeginDate());
-		this.endDate = fmt.print(weekClass.getEndDate());
+		this.beginDate = fmt.print(course.getBeginDate());
+		this.endDate = fmt.print(course.getEndDate());
 
-		this.level = weekClass.getLevel();
-		this.quantity = weekClass.getQuantity() == null ? "0" : weekClass.getQuantity().toString();
-		this.location = weekClass.getLocation();
+		this.level = course.getLevel();
+		this.quantity = course.getQuantity() == null ? "0" : course.getQuantity().toString();
+		this.location = course.getLocation();
 	}
 
 	public String id;

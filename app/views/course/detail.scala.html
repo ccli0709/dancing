@@ -1,4 +1,4 @@
-@(params: forms.PageParams, form: Form[forms.WeekClassForm]) @main(params) { } {
+@(params: forms.PageParams, form: Form[forms.CourseForm]) @main(params) { } {
 
 <div
 	class="row"
@@ -195,7 +195,7 @@
 
 		$("#btnRead").click(function() {
 			var id = $("#txbReadId").val();
-			var url = '@(routes.WeekClassDetail.aaa())/' + id;
+			var url = '@(routes.CourseDetail.aaa())/' + id;
 			window.location = url;
 			return false;
 		});

@@ -3,6 +3,22 @@
 
 # --- !Ups
 
+create table course (
+  id                        bigint auto_increment not null,
+  dance_division            varchar(255),
+  choreography              varchar(255),
+  day_of_week               varchar(255),
+  period                    varchar(255),
+  begin_time                varchar(255),
+  end_time                  varchar(255),
+  begin_date                datetime,
+  end_date                  datetime,
+  level                     varchar(255),
+  quantity                  bigint,
+  location                  varchar(255),
+  constraint pk_course primary key (id))
+;
+
 create table setting (
   id                        bigint auto_increment not null,
   type                      varchar(255),
@@ -24,22 +40,6 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
-create table week_class (
-  id                        bigint auto_increment not null,
-  dance_division            varchar(255),
-  choreography              varchar(255),
-  day_of_week               varchar(255),
-  period                    varchar(255),
-  begin_time                varchar(255),
-  end_time                  varchar(255),
-  begin_date                datetime,
-  end_date                  datetime,
-  level                     varchar(255),
-  quantity                  bigint,
-  location                  varchar(255),
-  constraint pk_week_class primary key (id))
-;
-
 
 
 
@@ -47,11 +47,11 @@ create table week_class (
 
 SET FOREIGN_KEY_CHECKS=0;
 
+drop table course;
+
 drop table setting;
 
 drop table user;
-
-drop table week_class;
 
 SET FOREIGN_KEY_CHECKS=1;
 

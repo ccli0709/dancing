@@ -14,18 +14,18 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
-public class WeekClassDetail extends Controller {
+public class CourseDetail extends Controller {
 
 	// 用於全局的參數
 	forms.PageParams params = new forms.PageParams();
 	forms.QueryParams queryParams;
 
 	// Master(List)
-	PagedList<models.WeekClass> page;
-	List<Form<forms.WeekClassForm>> rows;
+	PagedList<models.Course> page;
+	List<Form<forms.CourseForm>> rows;
 
 	// Detail
-	Form<forms.WeekClassForm> form;
+	Form<forms.CourseForm> form;
 
 	public void beforeAction() {
 
@@ -71,7 +71,7 @@ public class WeekClassDetail extends Controller {
 	}
 
 	public Result afterAction() {
-		return ok(views.html.weekClass.detail.render(params, form));
+		return ok(views.html.course.detail.render(params, form));
 	}
 
 	@Security.Authenticated(Secured.class)
@@ -96,14 +96,14 @@ public class WeekClassDetail extends Controller {
 			Long createdId = create();
 			// 新增成功會取得新的ID，就以新的ID導到查詢頁面
 			if (createdId > 0)
-				return redirect(controllers.routes.WeekClassDetail.index(createdId));
+				return redirect(controllers.routes.CourseDetail.index(createdId));
 		} else if ("delete".equals(action)) {
 			Long deletedId = delete();
 			// 刪除成功會取得已刪除ID，否則便是刪除有錯
 			if (deletedId > 0) {
 				String laststQuery = utils.StringUtils.getStringValue(session("LATEST_QUERY"), "");
 				if (laststQuery.length() == 0)
-					return redirect(controllers.routes.WeekClassMaster.index());
+					return redirect(controllers.routes.CourseMaster.index());
 				else
 					return redirect(laststQuery);
 			}
@@ -116,14 +116,14 @@ public class WeekClassDetail extends Controller {
 	private Long create() {
 		Long createdId = 0L;
 
-		form = Form.form(forms.WeekClassForm.class).bindFromRequest();
+		form = Form.form(forms.CourseForm.class).bindFromRequest();
 		// 這裡先不用FORM的VALIDATION
 		if (form.hasErrors()) {
 			loadPage(false);
 			flash("error", String.format("表單輸入內容有誤，更新失敗。"));
 		} else {
-			forms.WeekClassForm formData = form.get();
-			models.WeekClass weekClass = new models.WeekClass();
+			forms.CourseForm formData = form.get();
+			models.Course weekClass = new models.Course();
 			weekClass.setDanceDivision(formData.danceDivision);
 			weekClass.setChoreography(formData.choreography);
 			weekClass.setDayOfWeek(formData.dayOfWeek);
@@ -147,17 +147,17 @@ public class WeekClassDetail extends Controller {
 	private Long update() {
 		Long updatedId = 0L;
 
-		form = Form.form(forms.WeekClassForm.class).bindFromRequest();
+		form = Form.form(forms.CourseForm.class).bindFromRequest();
 		// 這裡先不用FORM的VALIDATION
 		if (form.hasErrors()) {
 			loadPage(false);
 			flash("error", String.format("表單輸入內容有誤，更新失敗。"));
 		} else {
-			forms.WeekClassForm formData = form.get();
+			forms.CourseForm formData = form.get();
 
 			updatedId = utils.StringUtils.getLongValue(formData.id, 0L);
 
-			models.WeekClass weekClass = models.WeekClass.find.byId(updatedId);
+			models.Course weekClass = models.Course.find.byId(updatedId);
 			weekClass.setDanceDivision(formData.danceDivision);
 			weekClass.setChoreography(formData.choreography);
 			weekClass.setDayOfWeek(formData.dayOfWeek);
@@ -183,16 +183,16 @@ public class WeekClassDetail extends Controller {
 	private Long delete() {
 		Long deletedId = 0L;
 
-		form = Form.form(forms.WeekClassForm.class).bindFromRequest();
+		form = Form.form(forms.CourseForm.class).bindFromRequest();
 		// 這裡先不用FORM的VALIDATION
 		if (form.hasErrors()) {
 			loadPage(false);
 			flash("error", String.format("表單輸入內容有誤，更新失敗。"));
 		} else {
 
-			forms.WeekClassForm formData = form.get();
+			forms.CourseForm formData = form.get();
 			deletedId = utils.StringUtils.getLongValue(formData.id, 0L);
-			models.WeekClass weekClass = models.WeekClass.find.byId(deletedId);
+			models.Course weekClass = models.Course.find.byId(deletedId);
 			weekClass.delete();
 
 			flash("success", String.format("課程資料刪除完成（編號%s）。", deletedId));
@@ -222,8 +222,8 @@ public class WeekClassDetail extends Controller {
 		// }
 
 		// 單筆，目前都先包成Form
-		models.WeekClass item = models.WeekClass.find.byId(queryParams.getId());
-		form = Form.form(forms.WeekClassForm.class).fill(new forms.WeekClassForm(item));
+		models.Course item = models.Course.find.byId(queryParams.getId());
+		form = Form.form(forms.CourseForm.class).fill(new forms.CourseForm(item));
 
 		// List<Anniversary> anniversaries = Anniversary.findAll();
 		// formRows = Lists.newArrayList();

@@ -8,10 +8,10 @@ POST    /login                      controllers.Application.validate()
 GET     /login                      controllers.Application.login()
 GET     /logout                     controllers.Application.logout()
 
-GET     /class/weeks                controllers.WeekClassMaster.index()
-GET     /class/week                 controllers.WeekClassDetail.aaa()
-GET     /class/week/:id             controllers.WeekClassDetail.index(id: Long)
-POST    /class/week/:id             controllers.WeekClassDetail.post(id: Long)
+GET     /courses                    controllers.CourseMaster.index()
+GET     /course/week                controllers.CourseDetail.aaa()
+GET     /course/:id                 controllers.CourseDetail.index(id: Long)
+POST    /course/:id                 controllers.CourseDetail.post(id: Long)
 
 GET     /setting/:id                controllers.SettingDetail.index(id: Long)
 

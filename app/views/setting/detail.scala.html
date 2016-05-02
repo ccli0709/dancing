@@ -8,7 +8,7 @@
 			<div
 				class="input-group"
 				style='width: 160px;'>
-				<span class="input-group-addon">上課代號</span>
+				<span class="input-group-addon">銝玨隞����</span>
 				<input
 					type="text"
 					class="form-control"
@@ -17,17 +17,17 @@
 			</div>
 			<button
 				class="btn btn-info"
-				id="btnRead">查詢</button>
-			<code style='margin-left: 3em'>維護功能</code>
+				id="btnRead">�閰�</button>
+			<code style='margin-left: 3em'>蝬剛風��</code>
 			<button
 				class="btn btn-primary"
-				id="btnCreate">新增</button>
+				id="btnCreate">�憓�</button>
 			<button
 				class="btn btn-warning"
-				id="btnUpdate">修改</button>
+				id="btnUpdate">靽格</button>
 			<button
 				class="btn btn-danger"
-				id="btnDelete">刪除</button>
+				id="btnDelete">��</button>
 		</form>
 	</div>
 </div>
@@ -38,7 +38,7 @@
 		<div id="tabs">
 			<ul>
 				<li>
-					<a href="#tabs-1">上課資料</a>
+					<a href="#tabs-1">銝玨鞈��</a>
 				</li>
 			</ul>
 
@@ -51,7 +51,7 @@
 						<tr>
 							<th
 								class='info'
-								style='width: 100px'>上課代碼</th>
+								style='width: 100px'>銝玨隞�蝣�</th>
 							<td>
 								<span class="label label-pill label-default">@form("id").value</span>
 								<input
@@ -61,7 +61,7 @@
 							</td>
 							<th
 								class='info'
-								style='width: 100px'>級別</th>
+								style='width: 100px'>蝝</th>
 							<td>
 								<select
 									name='level'
@@ -78,7 +78,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th class='info'>舞科</th>
+							<th class='info'>����</th>
 							<td>
 								<input
 									name='danceDivision'
@@ -86,7 +86,7 @@
 									class="form-control"
 									value='@form("danceDivision").value'></input>
 							</td>
-							<th class='info'>舞碼</th>
+							<th class='info'>��Ⅳ</th>
 							<td>
 								<select
 									name='choreography'
@@ -103,7 +103,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th class='info'>星期</th>
+							<th class='info'>����</th>
 							<td>
 								<input
 									name="dayOfWeek"
@@ -111,7 +111,7 @@
 									class="form-control"
 									value='@form("dayOfWeek").value'></input>
 							</td>
-							<th class='info'>時段</th>
+							<th class='info'>��挾</th>
 							<td>
 								<input
 									name='period'
@@ -121,7 +121,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th class='info'>起始時間</th>
+							<th class='info'>韏瑕����</th>
 							<td>
 								<input
 									name='beginTime'
@@ -129,7 +129,7 @@
 									class="form-control"
 									value='@form("beginTime").value'></input>
 							</td>
-							<th class='info'>結束時間</th>
+							<th class='info'>蝯����</th>
 							<td>
 								<input
 									name='endTime'
@@ -139,7 +139,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th class='info'>起始日期</th>
+							<th class='info'>韏瑕����</th>
 							<td>
 								<input
 									name='beginDate'
@@ -147,7 +147,7 @@
 									class="form-control"
 									value='@form("beginDate").value'></input>
 							</td>
-							<th class='info'>結束日期</th>
+							<th class='info'>蝯����</th>
 							<td>
 								<input
 									name='endDate'
@@ -157,7 +157,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th class='info'>課堂</th>
+							<th class='info'>隤脣��</th>
 							<td>
 								<input
 									name='quantity'
@@ -165,7 +165,7 @@
 									class="form-control"
 									value='@form("quantity").value'></input>
 							</td>
-							<th class='info'>地點</th>
+							<th class='info'>�暺�</th>
 							<td>
 								<select
 									name='location'
@@ -195,12 +195,12 @@
 
 		$("#btnRead").click(function() {
 			var id = $("#txbReadId").val();
-			var url = '@(routes.WeekClassDetail.aaa())/' + id;
+			var url = '@(routes.CourseDetail.aaa())/' + id;
 			window.location = url;
 			return false;
 		});
 
-		// 讓按鈕不必放在FORM裡面
+		// 霈�����FORM鋆⊿
 		$("#btnCreate").click(function() {
 			$('<input>').attr({
 				type : 'hidden',
@@ -211,7 +211,7 @@
 			return false;
 		});
 
-		// 讓按鈕不必放在FORM裡面
+		// 霈�����FORM鋆⊿
 		$("#btnUpdate").click(function() {
 			$('<input>').attr({
 				type : 'hidden',
