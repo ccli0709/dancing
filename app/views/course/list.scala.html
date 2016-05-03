@@ -53,7 +53,7 @@ List[Form[forms.CourseForm]]) @main(params) { } {
 				@if(page.hasPrev) {
 				<li>
 					<a
-						href='@(routes.CourseMaster.index())?p=@(page.getPageIndex())&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.prevPage")</a>
+						href='@(routes.CourseList.index())?p=@(page.getPageIndex())&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.prevPage")</a>
 				</li>
 				} else {
 				<li class="disabled">
@@ -66,7 +66,7 @@ List[Form[forms.CourseForm]]) @main(params) { } {
 				@if(page.hasNext) {
 				<li>
 					<a
-						href='@(routes.CourseMaster.index())?p=@(page.getPageIndex()+2)&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.nextPage")</a>
+						href='@(routes.CourseList.index())?p=@(page.getPageIndex()+2)&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryString")'>@Messages("pagination.nextPage")</a>
 				</li>
 				} else {
 				<li class="disabled">
@@ -87,12 +87,12 @@ List[Form[forms.CourseForm]]) @main(params) { } {
 				@for((key, value) <- headers) {
 				<th>
 					@if(!value.isEmpty){
-					<a href='@(routes.CourseMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params.getString("queryString"))'>
+					<a href='@(routes.CourseList.index())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params.getString("queryString"))'>
 						<i class="fa fa-sort-asc"></i>
 						</i>
 					</a>
 					} @key @if(!value.isEmpty){
-					<a href='@(routes.CourseMaster.index())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params.getString("queryString"))'>
+					<a href='@(routes.CourseList.index())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params.getString("queryString"))'>
 						<i class="fa fa-sort-desc"></i>
 					</a>
 					}
@@ -125,7 +125,7 @@ List[Form[forms.CourseForm]]) @main(params) { } {
 <script>
 	$(function() {
 		$("#btnQuery").click(function() {
-			var url = "@(routes.CourseMaster.index())?q=";
+			var url = "@(routes.CourseList.index())?q=";
 			if ($("#selChoreographies").val() != "")
 				url += "choreography:" + encodeURI($("#selChoreographies").val()) + ",";
 			if ($("#selLocations").val() != "")

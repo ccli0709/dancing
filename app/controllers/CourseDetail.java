@@ -20,54 +20,25 @@ public class CourseDetail extends Controller {
 	forms.PageParams params = new forms.PageParams();
 	forms.QueryParams queryParams;
 
-	// Master(List)
-	PagedList<models.Course> page;
-	List<Form<forms.CourseForm>> rows;
 
 	// Detail
 	Form<forms.CourseForm> form;
 
 	public void beforeAction() {
 
-		// common
+		// 畫面
 		params.putString("title", "每周上課清單");
-		params.putString("loginUid", session("loginUid"));
-		params.putString("loginEmail", session("loginEmail"));
-		params.putString("loginName", session("loginName"));
-
-		// 舞碼下拉選單
-		Map<String, String> choreographies = Maps.newLinkedHashMap();
-		choreographies.put("", "選擇舞碼");
-		choreographies.put("華爾滋", "華爾滋");
-		choreographies.put("森巴", "森巴");
-		choreographies.put("倫巴", "倫巴");
-		choreographies.put("探戈", "探戈");
-		choreographies.put("六步吉魯巴", "六步吉魯巴");
-		params.putMap("choreographies", choreographies);
-
-		// 位置下拉選單
-		Map<String, String> locations = Maps.newLinkedHashMap();
-		locations.put("", "選擇位置");
-		locations.put("文化中心至善廳", "文化中心至善廳");
-		locations.put("小港中鋼舞蹈教室", "小港中鋼舞蹈教室");
-		locations.put("鳳山青年公園（婦幼館旁）", "鳳山青年公園（婦幼館旁）");
-		params.putMap("locations", locations);
-
-		// 位置下拉選單
-		Map<String, String> levels = Maps.newLinkedHashMap();
-		levels.put("", "選擇級別");
-		levels.put("休閒", "休閒");
-		levels.put("標準", "標準");
-		levels.put("困難", "困難");
-		params.putMap("levels", levels);
-
-		// 分頁相關參數
+		// 登入
+		utils.LoginUtils.SetLoginParams(params);
+		// 分頁
 		queryParams = new forms.QueryParams(request());
-		params.putString("pageIndex", String.valueOf(queryParams.getPageIndex()));
-		params.putString("sortField", queryParams.getSortField());
-		params.putString("sortDirection", queryParams.getSortDirection());
-		params.putString("queryString", queryParams.getQueryString());
-
+		utils.LoginUtils.SetPagingParams(params, queryParams);
+		// 自有
+		params.putMap("choreographies", utils.CourseUtils.getChoreographies());
+		params.putMap("locations", utils.CourseUtils.getLocations());
+		params.putMap("levels", utils.CourseUtils.getLevels());
+		params.putMap("dayOfWeek", utils.CourseUtils.getDayOfWeek());
+		params.putMap("periods", utils.CourseUtils.getPeriods());
 	}
 
 	public Result afterAction() {
@@ -103,7 +74,7 @@ public class CourseDetail extends Controller {
 			if (deletedId > 0) {
 				String laststQuery = utils.StringUtils.getStringValue(session("LATEST_QUERY"), "");
 				if (laststQuery.length() == 0)
-					return redirect(controllers.routes.CourseMaster.index());
+					return redirect(controllers.routes.CourseList.index());
 				else
 					return redirect(laststQuery);
 			}

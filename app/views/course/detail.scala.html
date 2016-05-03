@@ -1,4 +1,11 @@
-@(params: forms.PageParams, form: Form[forms.CourseForm]) @main(params) { } {
+@(params: forms.PageParams, form: Form[forms.CourseForm]) @main(params) {
+<style>
+table.main th {
+	text-align: right;
+	vertical-align: middle;
+}
+</style>
+} {
 
 <div
 	class="row"
@@ -47,7 +54,7 @@
 					class="main"
 					method="post"
 					action="@request.uri">
-					<table class='table table-border'>
+					<table class='table table-border main'>
 						<tr>
 							<th
 								class='info'
@@ -67,7 +74,7 @@
 									name='level'
 									class="form-control"
 									id="selLevels">
-									@for((key, value) <- params.getMap("levels")){ @if(value.equals(form("level").value)){
+									@for((key, value) <- params.getMap("levels")){ @if(key.equals(form("level").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -92,7 +99,7 @@
 									name='choreography'
 									class="form-control"
 									id="selChoreographies">
-									@for((key, value) <- params.getMap("choreographies")){ @if(value.equals(form("choreography").value)){
+									@for((key, value) <- params.getMap("choreographies")){ @if(key.equals(form("choreography").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -105,19 +112,31 @@
 						<tr>
 							<th class='info'>星期</th>
 							<td>
-								<input
-									name="dayOfWeek"
-									type="text"
-									class="form-control"
-									value='@form("dayOfWeek").value'></input>
+								<select
+									name='dayOfWeek'
+									class="form-control">
+									@for((key, value) <- params.getMap("dayOfWeek")){ @if(key.equals(form("dayOfWeek").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
 							</td>
 							<th class='info'>時段</th>
 							<td>
-								<input
+								<select
 									name='period'
-									type="text"
-									class="form-control"
-									value='@form("period").value'></input>
+									class="form-control">
+									@for((key, value) <- params.getMap("periods")){ @if(key.equals(form("period").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
 							</td>
 						</tr>
 						<tr>
@@ -171,7 +190,7 @@
 									name='location'
 									class="form-control"
 									id="selLocations">
-									@for((key, value) <- params.getMap("locations")){ @if(value.equals(form("location").value)){
+									@for((key, value) <- params.getMap("locations")){ @if(key.equals(form("location").value)){
 									<option
 										value="@key"
 										selected>@value</option>

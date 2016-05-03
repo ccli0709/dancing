@@ -61,7 +61,7 @@ public class SettingDetail extends Controller {
 			if (deletedId > 0) {
 				String laststQuery = utils.StringUtils.getStringValue(session("LATEST_QUERY"), "");
 				if (laststQuery.length() == 0)
-					return redirect(controllers.routes.CourseMaster.index());
+					return redirect(controllers.routes.CourseList.index());
 				else
 					return redirect(laststQuery);
 			}

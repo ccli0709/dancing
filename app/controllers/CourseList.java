@@ -13,7 +13,7 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
-public class CourseMaster extends Controller {
+public class CourseList extends Controller {
 
 	// 用於全局的參數
 	forms.PageParams params = new forms.PageParams();
@@ -23,48 +23,20 @@ public class CourseMaster extends Controller {
 	PagedList<models.Course> page;
 	List<Form<forms.CourseForm>> rows;
 
-	// Detail
-
 	public void beforeAction() {
 
-		// common
+		// 畫面
 		params.putString("title", "每周上課清單");
-		params.putString("loginUid", session("loginUid"));
-		params.putString("loginEmail", session("loginEmail"));
-		params.putString("loginName", session("loginName"));
-
-		// 舞碼下拉選單
-		Map<String, String> choreographies = Maps.newLinkedHashMap();
-		choreographies.put("", "選擇舞碼");
-		choreographies.put("華爾滋", "華爾滋");
-		choreographies.put("森巴", "森巴");
-		choreographies.put("倫巴", "倫巴");
-		choreographies.put("探戈", "探戈");
-		choreographies.put("六步吉魯巴", "六步吉魯巴");
-		params.putMap("choreographies", choreographies);
-
-		// 位置下拉選單
-		Map<String, String> locations = Maps.newLinkedHashMap();
-		locations.put("", "選擇位置");
-		locations.put("文化中心至善廳", "文化中心至善廳");
-		locations.put("小港中鋼舞蹈教室", "小港中鋼舞蹈教室");
-		locations.put("鳳山青年公園（婦幼館旁）", "鳳山青年公園（婦幼館旁）");
-		params.putMap("locations", locations);
-
-		// 位置下拉選單
-		Map<String, String> levels = Maps.newLinkedHashMap();
-		levels.put("", "選擇級別");
-		levels.put("休閒", "休閒");
-		levels.put("標準", "標準");
-		levels.put("困難", "困難");
-		params.putMap("levels", levels);
-
-		// 分頁相關參數
+		// 登入
+		utils.LoginUtils.SetLoginParams(params);
+		// 分頁
 		queryParams = new forms.QueryParams(request());
-		params.putString("pageIndex", String.valueOf(queryParams.getPageIndex()));
-		params.putString("sortField", queryParams.getSortField());
-		params.putString("sortDirection", queryParams.getSortDirection());
-		params.putString("queryString", queryParams.getQueryString());
+		utils.LoginUtils.SetPagingParams(params, queryParams);
+		// 自有
+		params.putMap("choreographies", utils.CourseUtils.getChoreographies());
+		params.putMap("locations", utils.CourseUtils.getLocations());
+		params.putMap("levels", utils.CourseUtils.getLevels());
+		params.putMap("dayOfWeek", utils.CourseUtils.getDayOfWeek());
 
 		// 取得本次查詢用的參數
 		List<String> allowedFields = Lists.newArrayList("choreography", "location", "level");
@@ -84,7 +56,7 @@ public class CourseMaster extends Controller {
 	}
 
 	public Result afterAction() {
-		return ok(views.html.course.index.render(params, page, forms.CourseForm.getHeaders(), rows));
+		return ok(views.html.course.list.render(params, page, forms.CourseForm.getHeaders(), rows));
 	}
 
 	public Result index() {
@@ -108,7 +80,21 @@ public class CourseMaster extends Controller {
 		page = models.Course.getPagedList(queryParams);
 		rows = Lists.newArrayList();
 		for (models.Course item : page.getList()) {
-			Form<forms.CourseForm> form = Form.form(forms.CourseForm.class).fill(new forms.CourseForm(item));
+
+			// 我是應該在view裡才做key/value的轉換
+			// 還是在form.fill時做key/value的轉換
+			// 還是根本不要用form呢?
+			// 若是在view裡做的話，遇到較複雜的運算仍是要回到controller做.
+			// formData本來就是希望做為view與controller之間用字串傳遞
+			forms.CourseForm formData = new forms.CourseForm(item);
+			formData.choreography = utils.CourseUtils.getChoreographie(formData.choreography);
+			formData.dayOfWeek = utils.CourseUtils.getTheDayOfWeek(formData.dayOfWeek);
+			formData.level = utils.CourseUtils.getLevel(formData.level);
+			formData.location = utils.CourseUtils.getLocation(formData.location);
+			formData.period = utils.CourseUtils.getPeriod(formData.period);
+
+			Form<forms.CourseForm> form = Form.form(forms.CourseForm.class).fill(formData);
+
 			rows.add(form);
 		}
 
