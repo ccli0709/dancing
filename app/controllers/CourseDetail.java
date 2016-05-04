@@ -1,12 +1,6 @@
 package controllers;
 
-import java.util.List;
-import java.util.Map;
-
 import org.joda.time.DateTime;
-
-import com.avaje.ebean.PagedList;
-import com.google.common.collect.Maps;
 
 import play.data.DynamicForm;
 import play.data.Form;
@@ -29,7 +23,7 @@ public class CourseDetail extends Controller {
 		// 畫面
 		params.putString("title", "每周上課清單");
 		// 登入
-		utils.LoginUtils.SetLoginParams(params);
+		utils.SecurityUtils.SetLoginParams(params);
 		// 分頁
 		queryParams = new forms.QueryParams(request());
 		utils.LoginUtils.SetPagingParams(params, queryParams);
@@ -45,7 +39,7 @@ public class CourseDetail extends Controller {
 		return ok(views.html.course.detail.render(params, form));
 	}
 
-	@Security.Authenticated(Secured.class)
+	@Security.Authenticated(utils.SecurityUtils.class)
 	public Result index(Long id) {
 
 		beforeAction();
@@ -56,7 +50,6 @@ public class CourseDetail extends Controller {
 		return afterAction();
 	}
 
-	@Security.Authenticated(Secured.class)
 	public Result post(Long id) {
 		beforeAction();
 

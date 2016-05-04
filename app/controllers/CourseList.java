@@ -1,17 +1,15 @@
 package controllers;
 
 import java.util.List;
-import java.util.Map;
 
-import com.avaje.ebean.Expr;
 import com.avaje.ebean.PagedList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import play.data.Form;
 import play.mvc.Controller;
-import play.mvc.Http;
 import play.mvc.Result;
+import utils.LoginUtils;
+import utils.SecurityUtils;
 
 public class CourseList extends Controller {
 
@@ -28,10 +26,10 @@ public class CourseList extends Controller {
 		// 畫面
 		params.putString("title", "每周上課清單");
 		// 登入
-		utils.LoginUtils.SetLoginParams(params);
+		SecurityUtils.SetLoginParams(params);
 		// 分頁
 		queryParams = new forms.QueryParams(request());
-		utils.LoginUtils.SetPagingParams(params, queryParams);
+		LoginUtils.SetPagingParams(params, queryParams);
 		// 自有
 		params.putMap("choreographies", utils.CourseUtils.getChoreographies());
 		params.putMap("locations", utils.CourseUtils.getLocations());

@@ -1,11 +1,10 @@
 package controllers;
 
-import org.joda.time.DateTime;
-
 import models.Setting;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import utils.SecurityUtils;
 
 public class Application extends Controller {
 
@@ -29,9 +28,8 @@ public class Application extends Controller {
 
 	public void beforeAction() {
 		params.putString("title", "登入畫面");
-		params.putString("loginUid", session("loginUid"));
-		params.putString("loginEmail", session("loginEmail"));
-		params.putString("loginName", session("loginName"));
+		// 登入
+		utils.SecurityUtils.SetLoginParams(params);
 	}
 
 	public Result afterAction() {
@@ -47,18 +45,18 @@ public class Application extends Controller {
 	}
 
 	// 登入驗證
-	public Result validate() {
+	public Result authenticate() {
 		beforeAction();
 		form = Form.form(forms.LoginForm.class).bindFromRequest();
 		if (form.hasErrors()) {
 			flash("error", String.format("登入失敗。"));
 			return ok(views.html.login.render(params, form));
 		} else {
-			session("loginUid", "1");
-			session("loginEmail", "ccli0709@gmail.com");
-			session("loginName", "李政忠");
+			session("LOGIN_UID", "1");
+			session("LOGIN_EMAIL", "ccli0709@gmail.com");
+			session("LOGIN_NAME", "李政忠");
 			flash("success", String.format("登入成功。"));
-			return redirect(routes.Application.index());
+			return redirect(SecurityUtils.getLastUnauthUrl());
 		}
 
 	}
