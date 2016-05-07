@@ -6,14 +6,42 @@ import com.google.common.collect.Maps;
 
 public class CourseUtils {
 
+
+	
+
+	public static Map<String, String> getDanceDivisions() {
+		Map<String, String> danceDivisions = models.Setting.findMapByType("PA");
+		return danceDivisions;
+	}
+
+	public static String getDanceDivision(String key) {
+		Map<String, String> danceDivisions = getDanceDivisions();
+
+		String value = "---";
+		if (danceDivisions.containsKey(key))
+			value = danceDivisions.get(key);
+
+		return value;
+	}
+	
+	public static Map<String, String> getQuantities() {
+		Map<String, String> quantities = models.Setting.findMapByType("PG");
+		return quantities;
+	}
+
+	public static String getQuantity(String key) {
+		Map<String, String> quantities = getQuantities();
+
+		String value = "---";
+		if (quantities.containsKey(key))
+			value = quantities.get(key);
+
+		return value;
+	}
+
+	
 	public static Map<String, String> getChoreographies() {
-		Map<String, String> choreographies = Maps.newLinkedHashMap();
-		choreographies.put("", "[尚未選擇舞碼]");
-		choreographies.put("1", "華爾滋");
-		choreographies.put("2", "森巴");
-		choreographies.put("3", "倫巴");
-		choreographies.put("4", "探戈");
-		choreographies.put("5", "六步吉魯巴");
+		Map<String, String> choreographies = models.Setting.findMapByType("PC");
 		return choreographies;
 	}
 
@@ -28,11 +56,7 @@ public class CourseUtils {
 	}
 
 	public static Map<String, String> getLocations() {
-		Map<String, String> locations = Maps.newLinkedHashMap();
-		locations.put("", "[尚未選擇位置]");
-		locations.put("1", "文化中心至善廳");
-		locations.put("2", "小港中鋼舞蹈教室");
-		locations.put("3", "鳳山青年公園（婦幼館旁）");
+		Map<String, String> locations = models.Setting.findMapByType("PD");
 		return locations;
 	}
 
@@ -45,16 +69,12 @@ public class CourseUtils {
 
 		return value;
 	}
-	
+
 	public static Map<String, String> getLevels() {
-		Map<String, String> levels = Maps.newLinkedHashMap();
-		levels.put("", "[尚未選擇級別]");
-		levels.put("1", "休閒");
-		levels.put("2", "標準");
-		levels.put("3", "困難");
+		Map<String, String> levels = models.Setting.findMapByType("PI");
 		return levels;
 	}
-	
+
 	public static String getLevel(String key) {
 		Map<String, String> levels = getLevels();
 
@@ -66,15 +86,7 @@ public class CourseUtils {
 	}
 
 	public static Map<String, String> getDayOfWeek() {
-		Map<String, String> dayOfWeek = Maps.newLinkedHashMap();
-		dayOfWeek.put("", "[尚未選擇日別]");
-		dayOfWeek.put("1", "周一");
-		dayOfWeek.put("2", "周二");
-		dayOfWeek.put("3", "周三");
-		dayOfWeek.put("4", "周四");
-		dayOfWeek.put("5", "周五");
-		dayOfWeek.put("6", "周六");
-		dayOfWeek.put("7", "周日");
+		Map<String, String> dayOfWeek = models.Setting.findMapByType("PE");
 		return dayOfWeek;
 	}
 
@@ -87,16 +99,12 @@ public class CourseUtils {
 
 		return value;
 	}
-	
+
 	public static Map<String, String> getPeriods() {
-		Map<String, String> periods = Maps.newLinkedHashMap();
-		periods.put("", "[尚未選擇時段]");
-		periods.put("1", "早");
-		periods.put("2", "中");
-		periods.put("3", "晚");
+		Map<String, String> periods = models.Setting.findMapByType("PF");
 		return periods;
 	}
-	
+
 	public static String getPeriod(String key) {
 		Map<String, String> periods = getPeriods();
 

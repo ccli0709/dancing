@@ -74,7 +74,7 @@ public class Application extends Controller {
 		loadPage(true);
 		// 取得教師經歷(H1)
 		models.Setting result = Setting.getTeacherExperience();
-		params.putString("experience", result.getValue1());
+		params.putString("experience", result.getValue2());
 		return afterAction();
 	}
 

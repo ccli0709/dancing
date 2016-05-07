@@ -12,7 +12,7 @@ public class QueryParams {
 	private int pageSize;
 	private String sortField;
 	private String sortDirection;
-	private String queryString;
+	private String queryCondition;
 
 	public QueryParams(Request request) {
 
@@ -23,7 +23,7 @@ public class QueryParams {
 			this.setId(0L);
 		}
 
-		this.setPageSize(10);
+		this.setPageSize(20);
 
 		try {
 			int p = Integer.parseInt(request.getQueryString("p"));
@@ -45,13 +45,13 @@ public class QueryParams {
 
 		String q = request.getQueryString("q");
 		if (Strings.isNullOrEmpty(q))
-			this.setQueryString("");
+			this.setQueryCondition("");
 		else
-			this.setQueryString(q.trim());
+			this.setQueryCondition(q.trim());
 	}
 
 	public String getQueryUrlParams() {
-		return String.format("&p=%s&s=%s&d=%s&q=%s", pageIndex, sortField, sortDirection, queryString);
+		return String.format("&p=%s&s=%s&d=%s&q=%s", pageIndex, sortField, sortDirection, queryCondition);
 	}
 
 	public Long getId() {
@@ -94,12 +94,12 @@ public class QueryParams {
 		this.sortDirection = sortDirection;
 	}
 
-	public String getQueryString() {
-		return queryString;
+	public String getQueryCondition() {
+		return queryCondition;
 	}
 
-	public void setQueryString(String queryString) {
-		this.queryString = queryString;
+	public void setQueryCondition(String queryCondition) {
+		this.queryCondition = queryCondition;
 	}
 
 }

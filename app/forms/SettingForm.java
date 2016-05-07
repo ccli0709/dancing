@@ -1,5 +1,9 @@
 package forms;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
 public class SettingForm {
 
 	public SettingForm() {
@@ -19,11 +23,20 @@ public class SettingForm {
 		this.value4 = announcement.getValue4();
 	}
 
+	public String selected;
 	public String id;
 	public String type;
 	public String value1;
 	public String value2;
 	public String value3;
 	public String value4;
+
+	public static Map<String, String> getHeaders() {
+		Map<String, String> headers = Maps.newLinkedHashMap();
+		headers.put("類別", "");
+		headers.put("鍵值", "");
+		headers.put("內容", "");
+		return headers;
+	}
 
 }

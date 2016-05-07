@@ -13,7 +13,8 @@ GET     /course                     controllers.CourseDetail.aaa()
 GET     /course/:id                 controllers.CourseDetail.index(id: Long)
 POST    /course/:id                 controllers.CourseDetail.post(id: Long)
 
-GET     /setting/:id                controllers.SettingDetail.index(id: Long)
+GET     /settings                   controllers.SettingList.index()
+POST    /settings                   controllers.SettingList.post()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

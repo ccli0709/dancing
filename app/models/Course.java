@@ -55,10 +55,10 @@ public class Course extends Model {
 	public static PagedList<Course> getPagedList(forms.QueryParams queryParams) {
 		ExpressionList<Course> where = find.where();
 
-		if (queryParams.getQueryString().length() > 0) {
+		if (queryParams.getQueryCondition().length() > 0) {
 
 			List<String> allowedFields = Lists.newArrayList("choreography", "location", "level");
-			for (String query : queryParams.getQueryString().split(",")) {
+			for (String query : queryParams.getQueryCondition().split(",")) {
 
 				String[] tokens = query.split(":");
 				if (tokens.length != 2)

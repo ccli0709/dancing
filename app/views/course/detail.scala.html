@@ -74,6 +74,7 @@ table.main th {
 									name='level'
 									class="form-control"
 									id="selLevels">
+									<option value="">[尚未選擇級別]</option>
 									@for((key, value) <- params.getMap("levels")){ @if(key.equals(form("level").value)){
 									<option
 										value="@key"
@@ -87,11 +88,19 @@ table.main th {
 						<tr>
 							<th class='info'>舞科</th>
 							<td>
-								<input
+								<select
 									name='danceDivision'
-									type="text"
 									class="form-control"
-									value='@form("danceDivision").value'></input>
+									id="selLevels">
+									<option value="">[尚未選擇舞科]</option>
+									@for((key, value) <- params.getMap("danceDivisions")){ @if(key.equals(form("danceDivision").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
 							</td>
 							<th class='info'>舞碼</th>
 							<td>
@@ -99,6 +108,7 @@ table.main th {
 									name='choreography'
 									class="form-control"
 									id="selChoreographies">
+									<option value="">[尚未選擇舞碼]</option>
 									@for((key, value) <- params.getMap("choreographies")){ @if(key.equals(form("choreography").value)){
 									<option
 										value="@key"
@@ -115,6 +125,7 @@ table.main th {
 								<select
 									name='dayOfWeek'
 									class="form-control">
+									<option value="">[尚未選擇日別]</option>
 									@for((key, value) <- params.getMap("dayOfWeek")){ @if(key.equals(form("dayOfWeek").value)){
 									<option
 										value="@key"
@@ -129,6 +140,7 @@ table.main th {
 								<select
 									name='period'
 									class="form-control">
+									<option value="">[尚未選擇時段]</option>
 									@for((key, value) <- params.getMap("periods")){ @if(key.equals(form("period").value)){
 									<option
 										value="@key"
@@ -178,11 +190,20 @@ table.main th {
 						<tr>
 							<th class='info'>課堂</th>
 							<td>
-								<input
+								<select
 									name='quantity'
-									type="text"
 									class="form-control"
-									value='@form("quantity").value'></input>
+									id="selLocations">
+									<option value="">[尚未選擇課堂]</option>
+									@for((key, value) <- params.getMap("quantities")){ @if(key.equals(form("quantity").value)){
+									<option
+										value="@key"
+										selected>@value</option>
+									}else{
+									<option value="@key">@value</option>
+									} }
+								</select>
+									
 							</td>
 							<th class='info'>地點</th>
 							<td>
@@ -190,6 +211,7 @@ table.main th {
 									name='location'
 									class="form-control"
 									id="selLocations">
+									<option value="">[尚未選擇地點]</option>
 									@for((key, value) <- params.getMap("locations")){ @if(key.equals(form("location").value)){
 									<option
 										value="@key"
@@ -223,7 +245,7 @@ table.main th {
 		$("#btnCreate").click(function() {
 			$('<input>').attr({
 				type : 'hidden',
-				name : '_action',
+				name : 'action',
 				value : 'create'
 			}).appendTo('form.main');
 			$('form.main').submit();
@@ -234,7 +256,7 @@ table.main th {
 		$("#btnUpdate").click(function() {
 			$('<input>').attr({
 				type : 'hidden',
-				name : '_action',
+				name : 'action',
 				value : 'update'
 			}).appendTo('form.main');
 			$('form.main').submit();
@@ -244,7 +266,7 @@ table.main th {
 		$("#btnDelete").click(function() {
 			$('<input>').attr({
 				type : 'hidden',
-				name : '_action',
+				name : 'action',
 				value : 'delete'
 			}).appendTo('form.main');
 			$('form.main').submit();

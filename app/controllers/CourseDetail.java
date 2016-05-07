@@ -14,7 +14,6 @@ public class CourseDetail extends Controller {
 	forms.PageParams params = new forms.PageParams();
 	forms.QueryParams queryParams;
 
-
 	// Detail
 	Form<forms.CourseForm> form;
 
@@ -26,13 +25,19 @@ public class CourseDetail extends Controller {
 		utils.SecurityUtils.SetLoginParams(params);
 		// 分頁
 		queryParams = new forms.QueryParams(request());
-		utils.LoginUtils.SetPagingParams(params, queryParams);
+		params.putString("pageIndex", String.valueOf(queryParams.getPageIndex()));
+		params.putString("sortField", queryParams.getSortField());
+		params.putString("sortDirection", queryParams.getSortDirection());
+		params.putString("queryCondition", queryParams.getQueryCondition());
 		// 自有
 		params.putMap("choreographies", utils.CourseUtils.getChoreographies());
 		params.putMap("locations", utils.CourseUtils.getLocations());
 		params.putMap("levels", utils.CourseUtils.getLevels());
 		params.putMap("dayOfWeek", utils.CourseUtils.getDayOfWeek());
 		params.putMap("periods", utils.CourseUtils.getPeriods());
+		params.putMap("quantities", utils.CourseUtils.getQuantities());
+		params.putMap("danceDivisions", utils.CourseUtils.getDanceDivisions());
+
 	}
 
 	public Result afterAction() {
@@ -54,7 +59,7 @@ public class CourseDetail extends Controller {
 		beforeAction();
 
 		DynamicForm data = Form.form().bindFromRequest();
-		String action = data.get("_action");
+		String action = data.get("action");
 
 		if ("create".equals(action)) {
 			Long createdId = create();

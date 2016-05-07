@@ -1,0 +1,174 @@
+@(params: forms.PageParams , page: com.avaje.ebean.PagedList[models.Setting] , headers: Map[String, String] , rows:
+List[Form[forms.SettingForm]]) @main(params) { } {
+
+<div
+	class="row"
+	style="margin-bottom: 1em">
+	<div class="col-md-12">
+		<form class="form-inline">
+			<code style='margin-left: 3em'>維護功能</code>
+			<select
+				class="form-control"
+				style='width: 160px'>
+				@for((key, value) <- params.getMap("types")){
+				<option value="@key">@value</option>
+				}
+			</select>
+			<input
+				type="text"
+				name='value1'
+				class="form-control"
+				style='width: 100px'>
+
+			<button
+				class="btn btn-primary"
+				id="btnCreate">新增</button>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<nav>
+			<ul class="pager">
+				@if(page.hasPrev) {
+				<li>
+					<a
+						href='@(routes.SettingList.index())?p=@(page.getPageIndex())&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryCondition")'>@Messages("pagination.prevPage")</a>
+				</li>
+				} else {
+				<li class="disabled">
+					<a>@Messages("pagination.prevPage")</a>
+				</li>
+				}
+				<li class="current">
+					<a>第 @page.getDisplayXtoYofZ("-"," 筆 / 共 ") 筆</a>
+				</li>
+				@if(page.hasNext) {
+				<li>
+					<a
+						href='@(routes.SettingList.index())?p=@(page.getPageIndex()+2)&s=@params.getString("sortField")&d=@params.getString("sortDirection")&q=@params.getString("queryCondition")'>@Messages("pagination.nextPage")</a>
+				</li>
+				} else {
+				<li class="disabled">
+					<a>@Messages("pagination.nextPage")</a>
+				</li>
+				}
+			</ul>
+		</nav>
+
+	</div>
+</div>
+<div class="row marketing">
+
+	<div class="col-lg-offset-1 col-lg-9">
+		<div id="tabs-1">
+			<form
+				class="main"
+				method="post"
+				action="@request.uri">
+
+				<table class="table table-striped table-condensed">
+					<tr>
+						<th style='width: 160px'></th>
+						@for((key, value) <- headers) {
+						<th>
+							@if(!value.isEmpty){
+							<a href='@(routes.SettingList.index())?p=@(page.getPageIndex+1)&s=@value&d=asc&q=@(params.getString("queryCondition"))'>
+								<i class="fa fa-sort-asc"></i>
+								</i>
+							</a>
+							} @key @if(!value.isEmpty){
+							<a href='@(routes.SettingList.index())?p=@(page.getPageIndex+1)&s=@value&d=desc&q=@(params.getString("queryCondition"))'>
+								<i class="fa fa-sort-desc"></i>
+							</a>
+							}
+						</th>
+						}
+
+					</tr>
+					@for((row, index) <- rows.zipWithIndex) {
+					<tr>
+						<td>
+							<input type='button' class='btn btn-warning btnUpdate' value='修改'>
+							<button class='btn btn-danger'>刪除</button>
+							<input
+								type='hidden'
+								name='rows[@index].id'
+								value='@row("id").value'>
+							<input
+								type='hidden'
+								name='rows[@index].selected'
+								value=''>
+						</td>
+						<td>
+							<select
+								class="form-control"
+								style='width: 160px'
+								name='rows[@index].type'
+								disabled>
+								<option value="">[尚未選擇]</option>
+								@for((key, value) <- params.getMap("types")){ @if(key.equals(row("type").value)) {
+								<option
+									value="@key"
+									selected>@value</option>
+								}else{
+								<option value="@key">@value</option>
+								} }
+							</select>
+
+						</td>
+						<td>
+							<input
+								type="text"
+								name='value1'
+								class="form-control"
+								value='@row("value1").value'
+								style='width: 60px'
+								name='rows[@index].value1'
+								disabled>
+							@for(err <- row("value1").errors) {
+							<div
+								class="alert alert-danger"
+								role="alert"
+								style="margin: 0.5em 0; padding: 0.5em">@Messages(err.message, err.arguments())</div>
+							}
+						</td>
+						<td>
+							<input
+								type="text"
+								class="form-control"
+								value='@row("value2").value'
+								name='rows[@index].value2'>
+							@for(err <- row("value2").errors) {
+							<div
+								class="alert alert-danger"
+								role="alert"
+								style="margin: 0.5em 0; padding: 0.5em">@Messages(err.message, err.arguments())</div>
+							}
+						</td>
+
+
+					</tr>
+					}
+				</table>
+			</form>
+		</div>
+	</div>
+	} {
+	<script>
+		$(function() {
+			// 讓按鈕不必放在FORM裡面
+			$(".btnUpdate").click(function() {
+				$('<input>').attr({
+					type : 'hidden',
+					name : 'action',
+					value : 'update'
+				}).appendTo('form.main');
+
+				$(this).parent().find("input[name*='selected']").val('true');
+				$('form.main').submit();
+				return false;
+			});
+		});
+	</script>
+	}
