@@ -1,7 +1,13 @@
 package controllers;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
+import com.google.common.collect.Lists;
+
+import forms.SettingForm;
+import forms.SettingForms;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -16,6 +22,9 @@ public class CourseDetail extends Controller {
 
 	// Detail
 	Form<forms.CourseForm> form;
+
+	// 課程時間輸入列
+	List<Form<forms.CourseDateForm>> courseDateRows;
 
 	public void beforeAction() {
 
@@ -41,7 +50,7 @@ public class CourseDetail extends Controller {
 	}
 
 	public Result afterAction() {
-		return ok(views.html.course.detail.render(params, form));
+		return ok(views.html.course.detail.render(params, form, courseDateRows));
 	}
 
 	@Security.Authenticated(utils.SecurityUtils.class)
@@ -126,20 +135,43 @@ public class CourseDetail extends Controller {
 
 			updatedId = utils.StringUtils.getLongValue(formData.id, 0L);
 
-			models.Course weekClass = models.Course.find.byId(updatedId);
-			weekClass.setDanceDivision(formData.danceDivision);
-			weekClass.setChoreography(formData.choreography);
-			weekClass.setDayOfWeek(formData.dayOfWeek);
-			weekClass.setPeriod(formData.period);
-			weekClass.setBeginTime(formData.beginTime);
-			weekClass.setEndTime(formData.endTime);
-			weekClass
-					.setBeginDate(utils.StringUtils.getDateTimeValue(formData.beginDate, DateTime.now(), "yyyy-MM-dd"));
-			weekClass.setEndDate(utils.StringUtils.getDateTimeValue(formData.endDate, DateTime.now(), "yyyy-MM-dd"));
-			weekClass.setLevel(formData.level);
-			weekClass.setQuantity(utils.StringUtils.getLongValue(formData.quantity, 0L));
-			weekClass.setLocation(formData.location);
-			weekClass.update();
+			models.Course course = models.Course.find.byId(updatedId);
+			course.setDanceDivision(formData.danceDivision);
+			course.setChoreography(formData.choreography);
+			course.setDayOfWeek(formData.dayOfWeek);
+			course.setPeriod(formData.period);
+			course.setBeginTime(formData.beginTime);
+			course.setEndTime(formData.endTime);
+			course.setBeginDate(utils.StringUtils.getDateTimeValue(formData.beginDate, DateTime.now(), "yyyy-MM-dd"));
+			course.setEndDate(utils.StringUtils.getDateTimeValue(formData.endDate, DateTime.now(), "yyyy-MM-dd"));
+			course.setLevel(formData.level);
+			course.setQuantity(utils.StringUtils.getLongValue(formData.quantity, 0L));
+			course.setLocation(formData.location);
+			course.update();
+
+			// 課程日期輸入列表
+			forms.CourseDateForms courseDateForms = Form.form(forms.CourseDateForms.class).bindFromRequest().get();
+			List<Form<forms.CourseDateForm>> courseDateRows = courseDateForms.getRows();
+
+			// 刪除原有的課程日期
+			for (models.CourseDate originalCourseDate : course.getCourseDates()) {
+				originalCourseDate.delete();
+			}
+
+			int courseDateSerial = 1;
+			for (Form<forms.CourseDateForm> courseDateRow : courseDateRows) {
+				forms.CourseDateForm form = courseDateRow.get();
+				DateTime courseDate = utils.StringUtils.getDateTimeValue(form.courseDate, null, "yyyy-MM-dd");
+				if (courseDate == null)
+					continue;
+
+				models.CourseDate item = new models.CourseDate();
+				item.setCourse(course);
+				item.setSerial(courseDateSerial++);
+				item.setCourseDate(courseDate);
+				item.setRemark(form.remark);
+				item.save();
+			}
 
 			queryParams.setId(updatedId);
 			loadPage(true);
@@ -194,15 +226,24 @@ public class CourseDetail extends Controller {
 		models.Course item = models.Course.find.byId(queryParams.getId());
 		form = Form.form(forms.CourseForm.class).fill(new forms.CourseForm(item));
 
-		// List<Anniversary> anniversaries = Anniversary.findAll();
-		// formRows = Lists.newArrayList();
-		//
-		// for (Anniversary anniversary : anniversaries) {
-		// Form<AnniversaryForm> form =
-		// Form.form(AnniversaryForm.class).fill(new
-		// AnniversaryForm(anniversary));
-		// formRows.add(form);
-		// }
+		courseDateRows = Lists.newArrayList();
+		if (item != null) {
+			// List<Anniversary> anniversaries = Anniversary.findAll();
+
+			for (models.CourseDate courseDate : item.getCourseDates()) {
+				Form<forms.CourseDateForm> form = Form.form(forms.CourseDateForm.class)
+						.fill(new forms.CourseDateForm(courseDate));
+				courseDateRows.add(form);
+			}
+		}
+		// 補滿到20列
+		for (int i = courseDateRows.size(); i < 20; i++) {
+			forms.CourseDateForm emptyForm = new forms.CourseDateForm();
+			emptyForm.serial = String.format("%03d", i + 1);
+			Form<forms.CourseDateForm> form = Form.form(forms.CourseDateForm.class).fill(emptyForm);
+			courseDateRows.add(form);
+		}
+
 		//
 		// if (reload) {
 		// formData = Form.form(AnniversaryForm.class).fill(new

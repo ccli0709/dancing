@@ -8,6 +8,7 @@ public class SettingUtils {
 	public static Map<String, String> getTypes() {
 		//List<models.Setting> settings = models.Setting.find.all();
 		Map<String, String> types = Maps.newHashMap();
+		types.put("H1","教師經歷");
 		types.put("PA","舞科");
 		types.put("PB","舞碼");
 		types.put("PC","???");

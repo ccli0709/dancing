@@ -1,5 +1,9 @@
 package controllers;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import models.Setting;
 import play.data.Form;
 import play.mvc.Controller;
@@ -52,9 +56,11 @@ public class Application extends Controller {
 			flash("error", String.format("登入失敗。"));
 			return ok(views.html.login.render(params, form));
 		} else {
-			session("LOGIN_UID", "1");
-			session("LOGIN_EMAIL", "ccli0709@gmail.com");
-			session("LOGIN_NAME", "李政忠");
+
+			SecurityUtils.setLoginUid("1");
+			SecurityUtils.setLoginEmail("test@gmail.com");
+			SecurityUtils.setLoginName("管理者");
+
 			flash("success", String.format("登入成功。"));
 			return redirect(SecurityUtils.getLastUnauthUrl());
 		}
@@ -75,6 +81,17 @@ public class Application extends Controller {
 		// 取得教師經歷(H1)
 		models.Setting result = Setting.getTeacherExperience();
 		params.putString("experience", result.getValue2());
+
+		// 取得最近三筆公告事項
+		List<String> news = Lists.newArrayList();
+		int newsSize = 3;
+		for (models.Setting _news : Setting.getLatestNews()) {
+			news.add(_news.getValue2());
+			if (--newsSize <= 0)
+				break;
+		}
+		params.putList("news", news);
+
 		return afterAction();
 	}
 

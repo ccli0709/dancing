@@ -18,20 +18,15 @@
 		</div>
 	</div>
 	<div class="row">
+		@for(news <- params.getList("news")){
+
 		<div class="col-md-4">
 			<h2>
-				<span class="label label-info">開課訊息</span>
+				<span class="label label-warning">公告事項</span>
 			</h2>
-			<p>104.12.30週三中鋼新開一期，A班基礎倫巴，B班森巴，歡迎大家參加！</p>
-
+			<p>@news</p>
 		</div>
-		<div class="col-md-4">
-			<h2>
-				<span class="label label-warning">停課通知</span>
-			</h2>
-			<p>105.01.23週六8點文化中心華爾滋，停課一次。</p>
-		</div>
-
+		}
 	</div>
 </div>
 } {

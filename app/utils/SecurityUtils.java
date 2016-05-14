@@ -31,9 +31,13 @@ public class SecurityUtils extends Security.Authenticator {
 	}
 
 	public static void SetLoginParams(forms.PageParams params) {
-		params.putString("LOGIN_UID", getLoginUid());
-		params.putString("LOGIN_EMAIL", getLoginEmail());
-		params.putString("LOGIN_NAME", getLoginName());
+		params.putString("loginUid", getLoginUid());
+		params.putString("loginEmail", getLoginEmail());
+		params.putString("loginName", getLoginName());
+	}
+
+	public static void setLoginUid(String loginUid) {
+		Context.current().session().put("LOGIN_UID", loginUid);
 	}
 
 	public static String getLoginUid() {
@@ -44,8 +48,16 @@ public class SecurityUtils extends Security.Authenticator {
 		return Context.current().session().get("LOGIN_EMAIL");
 	}
 
+	public static void setLoginEmail(String loginEmail) {
+		Context.current().session().put("LOGIN_EMAIL", loginEmail);
+	}
+	
 	public static String getLoginName() {
 		return Context.current().session().get("LOGIN_NAME");
+	}
+	
+	public static void setLoginName(String loginName) {
+		Context.current().session().put("LOGIN_NAME", loginName);
 	}
 
 }

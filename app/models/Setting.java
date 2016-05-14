@@ -50,6 +50,10 @@ public class Setting extends Model {
 		return result;
 	}
 
+	public static List<Setting> getLatestNews() {
+		return find.where().eq("type", "NEWS").findList();
+	}	
+
 	public static Map<String, String> findMapByType(String type) {
 		Map<String, String> result = Maps.newLinkedHashMap();
 
@@ -136,6 +140,19 @@ public class Setting extends Model {
 
 	public void setDeletedTime(DateTime deletedTime) {
 		this.deletedTime = deletedTime;
+	}
+
+	public static String getNextValue1(String type) {
+		String value1 = "1";
+		ExpressionList<Setting> where = find.where();
+		where.add(Expr.eq("type", type)).orderBy(String.format("%s desc", "value1"));
+		List<Setting> settings = where.findList();
+		if (settings.size() > 0) {
+			Integer _value1 = Integer.parseInt(settings.get(0).value1);
+			value1 = String.format("%d", _value1 + 1);
+		}
+		
+		return value1;
 	}
 
 	public static PagedList<Setting> getPagedList(forms.QueryParams queryParams) {

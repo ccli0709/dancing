@@ -10,9 +10,12 @@ import forms.SettingForms;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.db.ebean.ModelsConfigLoader;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import utils.SettingUtils;
+import utils.StringUtils;
 import utils.SecurityUtils;
 
 public class SettingList extends Controller {
@@ -66,6 +69,7 @@ public class SettingList extends Controller {
 		return ok(views.html.setting.list.render(params, page, forms.SettingForm.getHeaders(), rows));
 	}
 
+	@Security.Authenticated(utils.SecurityUtils.class)
 	public Result index() {
 
 		beforeAction();
@@ -127,27 +131,28 @@ public class SettingList extends Controller {
 
 	}
 
+	@Security.Authenticated(utils.SecurityUtils.class)
 	public Result post() {
 		beforeAction();
 
 		DynamicForm data = Form.form().bindFromRequest();
 		String action = data.get("action");
 
-		// 收取多筆表單資料
+		// 收取多筆表單資料，現在要多一個類別來收多筆資料，再找找有沒有更好的寫法
 		SettingForms forms = Form.form(SettingForms.class).bindFromRequest().get();
-		List<Form<SettingForm>> rows = forms.getForms();
+		List<Form<SettingForm>> rows = forms.getRows();
 
 		// 檢查是否有選擇項目，且選擇項目是否有驗證錯誤
 		boolean isSelectNothing = true;
 		boolean hasErrors = false;
-		for (Form<SettingForm> form : rows) {
-			Logger.debug(form.data().get("selected"));
-			if ("true".equals(form.data().get("selected")))
-				continue;
+		for (Form<SettingForm> row : rows) {
+			if ("true".equals(row.data().get("selected"))) {
+				isSelectNothing = false;
 
-			isSelectNothing = false;
-			if (form.hasErrors())
-				hasErrors = true;
+				if (row.hasErrors()) {
+					hasErrors = true;
+				}
+			}
 		}
 
 		// 新刪修時都必須選擇項目
@@ -158,6 +163,37 @@ public class SettingList extends Controller {
 		// 新修時必須檢查輸入內容，刪則不必
 		if (hasErrors) {
 			flash("error", String.format("資料輸入錯誤，請檢查輸入內容。"));
+		}
+
+		if ("create".equals(action)) {
+			// 其實只會有一筆，為了和修改同樣做法
+			for (Form<SettingForm> row : rows) {
+				if ("true".equals(row.data().get("selected"))) {
+					// 前面做過檢查，這裡就直接取得資料
+					SettingForm form = row.get();
+					
+					// 取得該類別的最大鍵值並加一做為新鍵值
+					models.Setting setting = new models.Setting();
+					setting.setType(form.type);
+					setting.setValue1(models.Setting.getNextValue1(form.type));
+					setting.setValue2(form.value2);
+					setting.save();
+					
+					flash("success", String.format("系統參數[%d]新增完成。", setting.getId()));
+				}
+			}
+		} else if ("update".equals(action)) {
+			for (Form<SettingForm> row : rows) {
+				if ("true".equals(row.data().get("selected"))) {
+					// 前面做過檢查，這裡就直接取得資料
+					SettingForm form = row.get();
+					models.Setting setting = models.Setting.find.byId(StringUtils.getLongValue(form.id, 0L));
+					Logger.debug(String.format("form.id = %s", form.id));
+					setting.setValue2(form.value2.trim());
+					setting.save();
+					flash("success", String.format("系統參數[id=%s]修改完成。", form.id));
+				}
+			}
 		}
 
 		// if ("create".equals(action)) {

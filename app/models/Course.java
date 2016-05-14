@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.joda.time.DateTime;
 
@@ -49,6 +50,9 @@ public class Course extends Model {
 
 	// 上課地點
 	protected String location;
+
+	@OneToMany(mappedBy = "course")
+	public List<CourseDate> CourseDates;
 
 	public static Finder<Long, Course> find = new Finder<Long, Course>(Course.class);
 
@@ -176,6 +180,14 @@ public class Course extends Model {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public List<CourseDate> getCourseDates() {
+		return CourseDates;
+	}
+
+	public void setCourseDates(List<CourseDate> courseDates) {
+		CourseDates = courseDates;
 	}
 
 }

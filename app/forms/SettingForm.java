@@ -6,6 +6,14 @@ import com.google.common.collect.Maps;
 
 public class SettingForm {
 
+	public String selected;
+	public String id;
+	public String type;
+	public String value1;
+	public String value2;
+	public String value3;
+	public String value4;
+
 	public SettingForm() {
 	}
 
@@ -22,14 +30,6 @@ public class SettingForm {
 		this.value3 = announcement.getValue3();
 		this.value4 = announcement.getValue4();
 	}
-
-	public String selected;
-	public String id;
-	public String type;
-	public String value1;
-	public String value2;
-	public String value3;
-	public String value4;
 
 	public static Map<String, String> getHeaders() {
 		Map<String, String> headers = Maps.newLinkedHashMap();

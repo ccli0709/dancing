@@ -1,4 +1,4 @@
-@(params: forms.PageParams, form: Form[forms.CourseForm]) @main(params) {
+@(params: forms.PageParams, course: Form[forms.CourseForm] ,courseDateRows: List[Form[forms.CourseDateForm]]) @main(params) {
 <style>
 table.main th {
 	text-align: right;
@@ -20,7 +20,7 @@ table.main th {
 					type="text"
 					class="form-control"
 					id="txbReadId"
-					value='@form("id").value'>
+					value='@course("id").value'>
 			</div>
 			<button
 				class="btn btn-info"
@@ -42,29 +42,33 @@ table.main th {
 	class="row"
 	style="margin-bottom: 1em">
 	<div class="col-lg-9 col-lg-offset-1">
-		<div id="tabs">
-			<ul>
-				<li>
-					<a href="#tabs-1">上課資料</a>
-				</li>
-			</ul>
+		<form
+			class="main"
+			method="post"
+			action="@request.uri">
+			<div id="tabs">
+				<ul>
+					<li>
+						<a href="#tabs-1">上課資料</a>
+					</li>
+					<li>
+						<a href="#tabs-2">上課日期</a>
+					</li>
+				</ul>
 
-			<div id="tabs-1">
-				<form
-					class="main"
-					method="post"
-					action="@request.uri">
+				<div id="tabs-1">
+
 					<table class='table table-border main'>
 						<tr>
 							<th
 								class='info'
 								style='width: 100px'>上課代碼</th>
 							<td>
-								<span class="label label-pill label-default">@form("id").value</span>
+								<span class="label label-pill label-default">@course("id").value</span>
 								<input
 									type="hidden"
 									name="id"
-									value='@form("id").value' />
+									value='@course("id").value' />
 							</td>
 							<th
 								class='info'
@@ -75,7 +79,7 @@ table.main th {
 									class="form-control"
 									id="selLevels">
 									<option value="">[尚未選擇級別]</option>
-									@for((key, value) <- params.getMap("levels")){ @if(key.equals(form("level").value)){
+									@for((key, value) <- params.getMap("levels")){ @if(key.equals(course("level").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -93,7 +97,7 @@ table.main th {
 									class="form-control"
 									id="selLevels">
 									<option value="">[尚未選擇舞科]</option>
-									@for((key, value) <- params.getMap("danceDivisions")){ @if(key.equals(form("danceDivision").value)){
+									@for((key, value) <- params.getMap("danceDivisions")){ @if(key.equals(course("danceDivision").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -109,7 +113,7 @@ table.main th {
 									class="form-control"
 									id="selChoreographies">
 									<option value="">[尚未選擇舞碼]</option>
-									@for((key, value) <- params.getMap("choreographies")){ @if(key.equals(form("choreography").value)){
+									@for((key, value) <- params.getMap("choreographies")){ @if(key.equals(course("choreography").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -126,7 +130,7 @@ table.main th {
 									name='dayOfWeek'
 									class="form-control">
 									<option value="">[尚未選擇日別]</option>
-									@for((key, value) <- params.getMap("dayOfWeek")){ @if(key.equals(form("dayOfWeek").value)){
+									@for((key, value) <- params.getMap("dayOfWeek")){ @if(key.equals(course("dayOfWeek").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -141,7 +145,7 @@ table.main th {
 									name='period'
 									class="form-control">
 									<option value="">[尚未選擇時段]</option>
-									@for((key, value) <- params.getMap("periods")){ @if(key.equals(form("period").value)){
+									@for((key, value) <- params.getMap("periods")){ @if(key.equals(course("period").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -158,7 +162,7 @@ table.main th {
 									name='beginTime'
 									type="text"
 									class="form-control"
-									value='@form("beginTime").value'></input>
+									value='@course("beginTime").value'></input>
 							</td>
 							<th class='info'>結束時間</th>
 							<td>
@@ -166,7 +170,7 @@ table.main th {
 									name='endTime'
 									type="text"
 									class="form-control"
-									value='@form("endTime").value'></input>
+									value='@course("endTime").value'></input>
 							</td>
 						</tr>
 						<tr>
@@ -175,16 +179,16 @@ table.main th {
 								<input
 									name='beginDate'
 									type="text"
-									class="form-control"
-									value='@form("beginDate").value'></input>
+									class="form-control datepicker"
+									value='@course("beginDate").value'></input>
 							</td>
 							<th class='info'>結束日期</th>
 							<td>
 								<input
 									name='endDate'
 									type="text"
-									class="form-control"
-									value='@form("endDate").value'></input>
+									class="form-control datepicker"
+									value='@course("endDate").value'></input>
 							</td>
 						</tr>
 						<tr>
@@ -195,7 +199,7 @@ table.main th {
 									class="form-control"
 									id="selLocations">
 									<option value="">[尚未選擇課堂]</option>
-									@for((key, value) <- params.getMap("quantities")){ @if(key.equals(form("quantity").value)){
+									@for((key, value) <- params.getMap("quantities")){ @if(key.equals(course("quantity").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -203,7 +207,7 @@ table.main th {
 									<option value="@key">@value</option>
 									} }
 								</select>
-									
+
 							</td>
 							<th class='info'>地點</th>
 							<td>
@@ -212,7 +216,7 @@ table.main th {
 									class="form-control"
 									id="selLocations">
 									<option value="">[尚未選擇地點]</option>
-									@for((key, value) <- params.getMap("locations")){ @if(key.equals(form("location").value)){
+									@for((key, value) <- params.getMap("locations")){ @if(key.equals(course("location").value)){
 									<option
 										value="@key"
 										selected>@value</option>
@@ -223,10 +227,47 @@ table.main th {
 							</td>
 						</tr>
 					</table>
-				</form>
-			</div>
 
-		</div>
+				</div>
+				<div id="tabs-2">
+					<table class="table table-striped table-condensed">
+						<tr>
+							<th style='width: 80px'>課堂</th>
+							<th style='width: 160px'>上課日期</th>
+							<th>備註</th>
+						</tr>
+						@for((row, index) <- courseDateRows.zipWithIndex) {
+
+						<tr>
+							<td>
+								<input
+									type='hidden'
+									name='courseDateRows[@index].id'
+									value='@row("id").value'>
+								@row("serial").value
+							</td>
+							<td>
+								<input
+									type="text"
+									class="form-control datepicker"
+									value='@row("courseDate").value'
+									name='courseDateRows[@index].courseDate'>
+							</td>
+							<td>
+								<input
+									type="text"
+									class="form-control"
+									value='@row("remark").value'
+									name='courseDateRows[@index].remark'>
+							</td>
+						</tr>
+
+						}
+					</table>
+				</div>
+
+			</div>
+		</form>
 	</div>
 </div>
 } {

@@ -19,6 +19,15 @@ create table course (
   constraint pk_course primary key (id))
 ;
 
+create table course_date (
+  id                        bigint auto_increment not null,
+  course_id                 bigint,
+  serial                    integer,
+  course_date               datetime,
+  remark                    varchar(255),
+  constraint pk_course_date primary key (id))
+;
+
 create table setting (
   id                        bigint auto_increment not null,
   type                      varchar(255),
@@ -40,6 +49,8 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+alter table course_date add constraint fk_course_date_course_1 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_course_date_course_1 on course_date (course_id);
 
 
 
@@ -48,6 +59,8 @@ create table user (
 SET FOREIGN_KEY_CHECKS=0;
 
 drop table course;
+
+drop table course_date;
 
 drop table setting;
 

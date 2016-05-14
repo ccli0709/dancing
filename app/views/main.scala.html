@@ -63,7 +63,7 @@
 <link
 	rel="shortcut icon"
 	href='@routes.Assets.versioned("images/favicon.ico")'>
-	<link
+<link
 	rel="bookmark"
 	href='@routes.Assets.versioned("images/favicon.ico")'>
 @style
@@ -102,12 +102,14 @@
 							<li>
 								<a href="@routes.Application.index()">首頁</a>
 							</li>
-
 							<li>
-								<a href="@routes.CourseList.index()">每周上課清單</a>
+								<a href="@routes.CourseList.index()">課程查詢</a>
 							</li>
 							<li>
-								<a href="@routes.SettingList.index()?s=type">系統參數設定</a>
+								<a href="@routes.CourseWeek.index()">每週課表</a>
+							</li>
+							<li>
+								<a href="@routes.SettingList.index()">系統參數設定</a>
 							</li>
 							<li>
 								<a href="#">拉丁舞課程</a>
@@ -172,14 +174,16 @@
 
 	</div>
 	<!-- /container -->
-	
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">&copy; 1980-9999
-			<span class="label label-primary">ccli0709</span>
-			<code>@@gmail.com</code></p>
-      </div>
-    </footer>
+
+	<footer class="footer">
+		<div class="container">
+			<p class="text-muted">
+				&copy; 1980-9999
+				<span class="label label-primary">ccli0709</span>
+				<code>@@gmail.com</code>
+			</p>
+		</div>
+	</footer>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
@@ -193,11 +197,21 @@
 		src='@routes.Assets.versioned("bower_components/jquery-ui/jquery-ui.min.js")'
 		type="text/javascript"></script>
 	<script
+		src='@routes.Assets.versioned("bower_components/jquery-ui/ui/i18n/datepicker-zh-TW.js")'
+		type="text/javascript"></script>
+	<script
 		src='@routes.Assets.versioned("bower_components/bootbox/bootbox.js")'
 		type="text/javascript"></script>
 	<script
 		src='@routes.Assets.versioned("javascripts/hello.js")'
 		type="text/javascript"></script>
+	<script>
+		$(function() {
+			$(".datepicker").datepicker({
+				dateFormat : 'yy-mm-dd'
+			});
+		});
+	</script>
 	@script
 </body>
 </html>

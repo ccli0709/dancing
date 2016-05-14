@@ -13,6 +13,8 @@ GET     /course                     controllers.CourseDetail.aaa()
 GET     /course/:id                 controllers.CourseDetail.index(id: Long)
 POST    /course/:id                 controllers.CourseDetail.post(id: Long)
 
+GET     /courses/week                controllers.CourseWeek.index()
+
 GET     /settings                   controllers.SettingList.index()
 POST    /settings                   controllers.SettingList.post()
 
