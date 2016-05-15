@@ -57,7 +57,7 @@ public class Setting extends Model {
 	public static Map<String, String> findMapByType(String type) {
 		Map<String, String> result = Maps.newLinkedHashMap();
 
-		List<Setting> settings = find.where().eq("type", type).orderBy("value2").findList();
+		List<Setting> settings = find.where().eq("type", type).orderBy("value1").findList();
 		for (Setting setting : settings) {
 			String key = setting.getValue1();
 			String value = setting.getValue2();

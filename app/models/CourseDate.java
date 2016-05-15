@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,11 @@ import javax.persistence.ManyToOne;
 
 import org.joda.time.DateTime;
 
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Model;
+import com.avaje.ebean.PagedList;
+import com.google.common.collect.Lists;
 
 @Entity
 public class CourseDate extends Model {
@@ -72,6 +78,12 @@ public class CourseDate extends Model {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public static List<CourseDate> getOneWeekDates() {
+		ExpressionList<CourseDate> where = find.where();
+		where.add(Expr.ge("courseDate", "2016-05-10"));
+		return where.findList();
 	}
 
 }
