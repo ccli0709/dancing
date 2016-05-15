@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -122,6 +124,7 @@ public class CourseDetail extends Controller {
 		return createdId;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Long update() {
 		Long updatedId = 0L;
 
@@ -159,6 +162,17 @@ public class CourseDetail extends Controller {
 			}
 
 			int courseDateSerial = 1;
+			// 這裡要先依輸入的日期來排序
+
+			Collections.sort(courseDateRows, new Comparator<Form<forms.CourseDateForm>>() {
+				@Override
+				public int compare(Form<forms.CourseDateForm> o1, Form<forms.CourseDateForm> o2) {
+					forms.CourseDateForm f1 = o1.get();
+					forms.CourseDateForm f2 = o2.get();
+					return f1.courseDate.compareTo(f2.courseDate);
+				}
+			});
+
 			for (Form<forms.CourseDateForm> courseDateRow : courseDateRows) {
 				forms.CourseDateForm form = courseDateRow.get();
 				DateTime courseDate = utils.StringUtils.getDateTimeValue(form.courseDate, null, "yyyy-MM-dd");
@@ -229,6 +243,15 @@ public class CourseDetail extends Controller {
 		courseDateRows = Lists.newArrayList();
 		if (item != null) {
 			// List<Anniversary> anniversaries = Anniversary.findAll();
+			// List<models.CourseDate> = item.getCourseDates();
+			// Collections.sort(items, new Comparator() {
+			// @Override
+			// public int compare(Object o1, Object o2) {
+			// return ((models.CourseDate)
+			// o1).getCourseDate().compareTo(((models.CourseDate)
+			// o2).getCourseDate());
+			// }
+			// });
 
 			for (models.CourseDate courseDate : item.getCourseDates()) {
 				Form<forms.CourseDateForm> form = Form.form(forms.CourseDateForm.class)

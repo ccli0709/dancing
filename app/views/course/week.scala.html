@@ -31,14 +31,16 @@
 			
 			@for((periodKey, periodValue) <- params.getMap("periods")) {
 			<tr>
-				<th>@periodValue</th>
+				<th style='height: 120px;'>@periodValue</th>
 				@for((key, value) <- params.getMap("weekDays")) {
-				<td class='text-center' style='min-height: 100px;'>
+				<td class='text-center'>
 					@for(item <- items){
-						@if(item("courseDate").value.equals(value) && item("period").value.equals(periodValue)){ 
-							@item("danceDivision").value <br/>
-							@item("choreography").value <br/>
-							@item("level").value <br/>
+						@if(item("courseDate").value.equals(value) && item("period").value.equals(periodValue)){
+							<a href='@(routes.CourseDetail.index(Long.parseLong(item("courseId").value)))'>@item("courseId").value</a><br/> 
+							@item("danceDivision").value<br/>
+							@item("choreography").value<br/>
+							@item("level").value<br/>
+							第 @item("serial").value 堂<br/>
 							@item("location").value <br/>
 						}
 					}
